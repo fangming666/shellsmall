@@ -1,0 +1,12 @@
+<!--index.wxml-->
+<view class="container">
+<!--底部区域  -->
+  <view class="pay-box">
+    <view class="pay-number">
+      <view class="shopping-cart">
+        <view class="shopping-item"><image src="./../../img/cart.png"></image></view></view>
+      <text>{{allRate}}</text>
+    </view>
+    <view class="pay-btn">支付</view>
+  </view>
+</view>
