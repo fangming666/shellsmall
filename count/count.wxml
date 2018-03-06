@@ -1,0 +1,7 @@
+<template name="count">
+  <view class="clearfix count">
+    <image  class="pull-left reduceBtn" src="http://fm.xiaofany.com/shellSmall/reduce.png" bindtap='{{reduceNum}}'></image>
+    <text class="pull-left">{{num}}</text>
+    <image class="pull-left addBtn" src="http://fm.xiaofany.com/shellSmall/add.png" bindtap='{{addNum}}'></image>
+  </view>
+</template>

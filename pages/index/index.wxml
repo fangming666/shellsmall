@@ -1,12 +1,64 @@
 <!--index.wxml-->
 <view class="container">
-<!--底部区域  -->
+  <!----顶部公告区域  -->
+  <view class="head">
+    <view class="head-bg"></view>
+    <text class="head-title">{{headTitle}}</text>
+    <view class="head-notice">
+      <text class="head-notice-title">公告</text>
+      <text class="head-notice-info">{{headNotice}}</text>
+    </view>
+  </view>
+
+  <!--中间商品区域  -->
+  <scroll-view class="goods-warp" scroll-y>
+    <view class="goods clearfix" wx:for="{{goods}}">
+      <image src="{{item.img}}" class="goods-img pull-left"></image>
+      <view class="goods-item pull-left">
+        <text class="goods-title">{{item.name}}</text>
+        <view class="text-muted clearfix">
+          <text class="pull-left m-r-2">已售{{item.sold}}</text>
+          <text class="pullleft">原价{{item.init}}</text>
+        </view>
+        <view class="goods-now clearfix">
+          <text class="text-danger">￥{{item.now}}</text>
+          <!-- <import src="./../../count/count.wxml" />
+          <template  is="count" data="{{...item.countData}}"></template> -->
+
+          <view class="clearfix count">
+            <image class="pull-left reduceBtn" src="http://fm.xiaofany.com/shellSmall/reduce.png" bindtap='reduceNum' data-item="{{index}}" wx:if="{{item.num>0}}"></image>
+            <text class="pull-left" wx:if="{{item.num>0}}">{{item.num}}</text>
+            <image class="pull-left addBtn" src="http://fm.xiaofany.com/shellSmall/add.png" bindtap='addNum' data-item="{{index}}"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+
+
+  <!--底部区域  -->
   <view class="pay-box">
     <view class="pay-number">
       <view class="shopping-cart">
-        <view class="shopping-item"><image src="./../../img/cart.png"></image></view></view>
+        <view class="shopping-item">
+          <image src="./../../img/cart.png"></image>
+          <text class="cart-num" wx:if="{{allGoodsNum}}">{{allGoodsNum}}</text>
+        </view>
+      </view>
       <text>{{allRate}}</text>
     </view>
     <view class="pay-btn">支付</view>
+  </view>
+
+
+  <!----购物车  -->
+  <view class="shopping-trolley">
+    <view class="shopping-trolley-title">购物车
+      <text class="text-primary pull-right">清空</text>
+    </view>
+    <scroll-view>
+      <view></view>
+    </scroll-view>
   </view>
 </view>
