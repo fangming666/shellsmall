@@ -1,0 +1,8 @@
+<!--pages/key/key.wxml-->
+<view class="key">
+  <view class="key-title">{{keyTitle}}</view>
+  <view>
+    <text>微信的appid</text>
+    <input type="text" placeholder='请输入微信的appid'></input>
+  </view>
+</view>

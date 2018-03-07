@@ -35,3 +35,7 @@
 .text-primary {
   color: #479dd4 !important;
 }
+
+.text-left {
+  text-align: left !important;
+}

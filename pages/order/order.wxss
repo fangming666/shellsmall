@@ -1,0 +1,35 @@
+/* pages/order/order.wxss */
+
+.order-warp {
+  padding: 0.7rem;
+}
+
+.order-warp>view {
+  margin: 0.5rem;
+}
+
+.order-head {
+  text-align: center;
+}
+
+.order-time {
+  font-size: 0.9rem;
+}
+
+.order-money {
+  font-size: 14px;
+  color: #9b9b9b;
+  margin-bottom: 1rem;
+}
+
+.order-list {
+  font-size: 14px;
+  color: #9b9b9b;
+  padding: 0.5rem;
+  border-bottom: 1px solid lightgray;
+  margin-top: 0
+}
+
+.order-list>text {
+  margin-right: 4rem;
+}

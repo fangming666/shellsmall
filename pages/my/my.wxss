@@ -1,1 +1,49 @@
-/* pages/my/my.wxss */
+.my-head {
+  padding: 30rpx;
+}
+
+.my-head>image {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 50%;
+}
+
+.my-head>text {
+  height: 150rpx;
+  line-height: 150rpx;
+  display: inline-block;
+}
+
+.my-content >navigator {
+  height: 160rpx;
+  padding: 20rpx;
+  box-sizing: border-box;
+  line-height: 160rpx;
+  position: relative;
+}
+
+.my-content>navigator>image:not(.arrow-right) {
+  width: 120rpx;
+  height: 120rpx;
+}
+
+.my-content>navigator>text {
+  display: inline-block;
+  margin-left: 30rpx;
+  font-size: 1rem;
+  color: #707070;
+  width: calc(100vw - 200rpx);
+  height: 120rpx;
+  box-sizing: border-box;
+  line-height: calc(90rpx - 0.25rem);
+  padding: 0.5rem;
+  border-bottom: 1px solid lightgray;
+}
+
+.arrow-right {
+  width: 80rpx;
+  height: 80rpx;
+  position: absolute;
+  right: 2rem;
+  top: 1rem;
+}
