@@ -5,7 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-  
+    newsTitle:"消息列表",
+    newsList: [{ "time": "2018-02-13", "img": "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg", "name": "酸", "text": "这是一段测试的文字" }, { "time": "2018-02-13", "img": "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg", "name": "酸", "text": "这是一段测试的文字" }, { "time": "2018-02-13", "img": "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg", "name": "酸", "text": "这是一段测试的文字" }, { "time": "2018-02-13", "img": "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg", "name": "酸", "text": "这是一段测试的文字" }, { "time": "2018-02-13", "img": "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg", "name": "酸", "text": "这是一段测试的文字" }, { "time": "2018-02-13", "img": "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg", "name": "酸", "text": "这是一段测试的文字" }]
   },
 
   /**

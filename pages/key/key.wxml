@@ -1,8 +1,26 @@
 <!--pages/key/key.wxml-->
 <view class="key">
   <view class="key-title">{{keyTitle}}</view>
-  <view>
-    <text>微信的appid</text>
-    <input type="text" placeholder='请输入微信的appid'></input>
+  <view class="key-list" wx:for="{{keyList}}"  wx:key="key">
+    <view class="key-info" catchtap='openKeyList' data-item="{{index}}">
+    <text>key:{{item.key}}</text>
+    <text>token:{{item.token}}</text>
+    </view>
+    <view class="key-group" wx:if="{{!item.switch}}" >
+      <text>只有一次编辑的机会，请仔细核对</text>
+      <view>微信appid
+        <input />
+      </view>
+      <view>微信secret
+        <input />
+      </view>
+      <view>登录邮箱
+        <input value="{{item.emailText}}" bindinput='verify' data-item="{{index}}"/>
+        <view class="text-danger" wx:if="{{item.emailSwitch}}">请输入正确的电子邮箱地址</view>
+      </view>
+      <view>
+        <button size="mini" type="primary">保存</button>
+      </view>
+    </view>
   </view>
 </view>

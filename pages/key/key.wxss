@@ -1,3 +1,45 @@
 .key {
-  background: lightgray;
+  padding: 0.7rem;
+}
+
+.key-title {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.key-list {
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+}
+
+.key-info>text {
+  margin-right: 4rem;
+  margin-bottom: 1rem;
+}
+
+.key-group {
+  margin-top: 0.5rem;
+}
+
+.key-group>text {
+  font-size: 14px;
+  color: #db524b !important;
+}
+
+.key-group>view {
+  font-size: 15px;
+  color: #9b9b9b;
+  height: 32px;
+}
+
+.key-group>view:last-child {
+  text-align: right;
+}
+
+.key-group input {
+  display: inline-block;
+  position: relative;
+  top: 8px;
+  left: 0.5rem;
 }

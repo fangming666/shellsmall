@@ -1,2 +1,19 @@
 <!--pages/news/news.wxml-->
-<text>pages/news/news.wxml</text>
+<view class="news-warp">
+  <view class="news-title">{{newsTitle}}</view>
+  <view wx:for="{{newsList}}"  wx:key="key" class="news-list">
+    <view class="news-time">{{item.time}}</view>
+    <view class="news-info clearfix">
+      <image class="pull-left" src="{{item.img}}"></image>
+      <view class=" pull-left">
+        <text class="news-name ">{{item.name}}</text>
+        <text class="news-text ">{{item.text}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="clearfix dialog-box">
+  <input class="pull-left" />
+  <button size="mini" class="pull-left" type="primary">发送</button>
+  </view>
+</view>

@@ -4,7 +4,7 @@
   <view class="order-time">{{orderTime}}</view>
   <view class="order-buy-num">购买数量:{{orderBuyNum}}</view>
   <view class="order-money">已支付:{{orderMoney}}</view>
-  <view class="order-list" wx:for="{{orderList}}">
+  <view class="order-list" wx:for="{{orderList}}"  wx:key="key">
     <text>订单编号：{{item.orderNum}}</text>
     <text>key:{{item.orderKey}}</text>
   </view>

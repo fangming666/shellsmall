@@ -12,7 +12,7 @@
 
   <!--中间商品区域  -->
   <scroll-view class="goods-warp" scroll-y>
-    <view class="goods clearfix" wx:for="{{goods}}" >
+    <view class="goods clearfix" wx:for="{{goods}}"  wx:key="key">
       <image src="{{item.img}}" class="goods-img pull-left"  catchtap='openAfficheTwo' data-item="{{index}}"></image>
       <view class="goods-item pull-left">
         <text class="goods-title" catchtap='openAfficheTwo' data-item="{{index}}">{{item.name}}</text>
@@ -60,7 +60,7 @@
       <text class="text-primary pull-right">清空</text>
     </view>
     <scroll-view class="goods-warp" scroll-y>
-      <view class="goods clearfix" wx:for="{{goods}}">
+      <view class="goods clearfix" wx:for="{{goods}}"  wx:key="key">
         <image src="{{item.img}}" class="goods-img pull-left"></image>
         <view class="goods-item pull-left">
           <text class="goods-title">{{item.name}}</text>
