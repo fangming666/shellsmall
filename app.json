@@ -1,7 +1,8 @@
 {
   "pages": [
-    "pages/key/key",
     "pages/index/index",
+    "pages/key/key",
+  
     "pages/news/news",
     "pages/my/my",
     "pages/order/order"
