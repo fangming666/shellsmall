@@ -4,104 +4,113 @@
   <view class="head">
     <view class="head-bg"></view>
     <text class="head-title">{{headTitle}}</text>
-    <view class="head-notice" bindtap='openAfficheOne'>
-      <text class="head-notice-title">公告</text>
-      <text class="head-notice-info">{{headNotice}}</text>
+    <view class="head-notice clearfix" bindtap='openAfficheOne'>
+      <text class="head-notice-title pull-left">公告</text>
+      <view class="example pull-left">
+        <view class="marquee_box">
+          <view class="marquee_text" style="{{orientation}}:{{marqueeDistance2}}px;font-size: {{size}}px;">
+            <text>{{headNotice}}</text>
+              <text wx:if="{{marquee2copy_status}}" style="margin-left:{{marquee2_margin}}px;">{{headNotice}}</text>
+          </view>
+        </view>
+      </view>
     </view>
   </view>
 
   <!--中间商品区域  -->
-  <scroll-view class="goods-warp" scroll-y>
-    <view class="goods clearfix" wx:for="{{goods}}"  wx:key="key">
-      <image src="{{item.img}}" class="goods-img pull-left"  catchtap='openAfficheTwo' data-item="{{index}}"></image>
-      <view class="goods-item pull-left">
-        <text class="goods-title" catchtap='openAfficheTwo' data-item="{{index}}">{{item.name}}</text>
-        <view class="text-muted clearfix">
-          <text class="pull-left m-r-2">已售{{item.sold}}</text>
-          <text class="pullleft">原价{{item.init}}</text>
-        </view>
-        <view class="goods-now clearfix">
-          <text class="text-danger">￥{{item.now}}</text>
-          <!-- <import src="./../../count/count.wxml" />
-          <template  is="count" data="{{...item.countData}}"></template> -->
+ <scroll-view class="goods-warp" scroll-y>
+    <view class="goods clearfix" wx:for="{{goods}}" wx:key="key">
+        <image src="{{item.img}}" class="goods-img pull-left" catchtap='openAfficheTwo' data-item="{{index}}"></image>
+        <view class="goods-item pull-left">
+            <text class="goods-title" catchtap='openAfficheTwo' data-item="{{index}}">{{item.name}}</text>
+            <view class="text-muted clearfix">
+                <text class="pull-left m-r-2">已售{{item.sold}}</text>
+                <text class="pullleft">原价{{item.init}}</text>
+            </view>
+            <view class="goods-now clearfix">
+                <text class="text-danger">￥{{item.now}}</text>
+                <!-- <import src="./../../count/count.wxml" />
+                      <template  is="count" data="{{...item.countData}}"></template> -->
 
-          <view class="clearfix count">
-            <image class="pull-left reduceBtn" src="http://fm.xiaofany.com/shellSmall/reduce.png" bindtap='reduceNum' data-item="{{index}}" wx:if="{{item.num>0}}"></image>
-            <text class="pull-left" wx:if="{{item.num>0}}">{{item.num}}</text>
-            <image class="pull-left addBtn" src="http://fm.xiaofany.com/shellSmall/add.png" bindtap='addNum' data-item="{{index}}"></image>
-          </view>
+                <view class="clearfix count">
+                    <image class="pull-left reduceBtn" src="http://fm.xiaofany.com/shellSmall/reduce.png" bindtap='reduceNum' data-item="{{index}}" wx:if="{{item.num>0}}"></image>
+                    <text class="pull-left" wx:if="{{item.num>0}}">{{item.num}}</text>
+                    <image class="pull-left addBtn" src="http://fm.xiaofany.com/shellSmall/add.png" bindtap='addNum' data-item="{{index}}"></image>
+                </view>
+            </view>
         </view>
-      </view>
     </view>
-  </scroll-view>
+</scroll-view>
 
 
 
-  <!--底部区域  -->
-  <view class="pay-box">
+<!--底部区域  -->
+<view class="pay-box">
     <view class="pay-number">
-      <view class="shopping-cart">
-        <view class="shopping-item">
-          <image src="./../../img/cart.png" bindtap='toggleCard'></image>
-          <text class="cart-num" wx:if="{{allGoodsNum}}">{{allGoodsNum}}</text>
+        <view class="shopping-cart">
+            <view class="shopping-item">
+                <image src="./../../img/cart.png" bindtap='toggleCard'></image>
+                <text class="cart-num" wx:if="{{allGoodsNum}}">{{allGoodsNum}}</text>
+            </view>
         </view>
-      </view>
-      <text>{{allRate}}</text>
+        <text>{{allRate}}</text>
     </view>
     <view class="pay-btn">支付</view>
-  </view>
+</view>
 
 
-  <!----购物车  -->
-  <view wx:if="{{cardSwitch}}" class="shopping-trolley">
+<!----购物车  -->
+<view wx:if="{{cardSwitch}}" class="shopping-trolley">
     <view class="clooseCard" bindtap='clooseCard'>
     </view>
     <view class="shopping-trolley-title">购物车
-      <text class="text-primary pull-right">清空</text>
+        <text class="text-primary pull-right">清空</text>
     </view>
     <scroll-view class="goods-warp" scroll-y>
-      <view class="goods clearfix" wx:for="{{goods}}"  wx:key="key">
-        <image src="{{item.img}}" class="goods-img pull-left"></image>
-        <view class="goods-item pull-left">
-          <text class="goods-title">{{item.name}}</text>
-          <view class="text-muted clearfix">
-            <text class="pull-left m-r-2">已售{{item.sold}}</text>
-            <text class="pullleft">原价{{item.init}}</text>
-          </view>
-          <view class="goods-now clearfix">
-            <text class="text-danger">￥{{item.now}}</text>
-            <!-- <import src="./../../count/count.wxml" />
-          <template  is="count" data="{{...item.countData}}"></template> -->
+        <view class="goods clearfix" wx:for="{{goods}}" wx:key="key">
+            <image src="{{item.img}}" class="goods-img pull-left"></image>
+            <view class="goods-item pull-left">
+                <text class="goods-title">{{item.name}}</text>
+                <view class="text-muted clearfix">
+                    <text class="pull-left m-r-2">已售{{item.sold}}</text>
+                    <text class="pullleft">原价{{item.init}}</text>
+                </view>
+                <view class="goods-now clearfix">
+                    <text class="text-danger">￥{{item.now}}</text>
+                    <!-- <import src="./../../count/count.wxml" />
+                          <template  is="count" data="{{...item.countData}}"></template> -->
 
-            <view class="clearfix count">
-              <image class="pull-left reduceBtn" src="http://fm.xiaofany.com/shellSmall/reduce.png" bindtap='reduceNum' data-item="{{index}}" wx:if="{{item.num>0}}"></image>
-              <text class="pull-left" wx:if="{{item.num>0}}">{{item.num}}</text>
-              <image class="pull-left addBtn" src="http://fm.xiaofany.com/shellSmall/add.png" bindtap='addNum' data-item="{{index}}"></image>
+                    <view class="clearfix count">
+                        <image class="pull-left reduceBtn" src="http://fm.xiaofany.com/shellSmall/reduce.png" bindtap='reduceNum' data-item="{{index}}" wx:if="{{item.num>0}}"></image>
+                        <text class="pull-left" wx:if="{{item.num>0}}">{{item.num}}</text>
+                        <image class="pull-left addBtn" src="http://fm.xiaofany.com/shellSmall/add.png" bindtap='addNum' data-item="{{index}}"></image>
+                    </view>
+                </view>
             </view>
-          </view>
         </view>
-      </view>
     </scroll-view>
-  </view>
+</view>
 
 
-  <!-----公告栏  ----->
-  <view class="affiche-box" wx:if="{{afficheSwicth}}">
-    <view class="affiche-content">
-      <text class="affiche-title">{{afficheTitle}}</text>
-      <text class="affiche-sold text-left">已售：{{afficheSold}}</text>
-      <view class="affiche-cut">优惠</view>
-      <text class="affiche-init text-left">原价：{{afficheInit}}</text>
-      <text class="affiche-now text-left">现价：{{afficheNow}}</text>
-      <text class="affiche-prefer text-left">{{affichePrefer}}</text>
-      <view class="affiche-cut">公告</view>
-      <text class="affiche-info text-left">{{afficheInfo}}</text>
+<!-----公告栏  ----->
+<view class="affiche-box" wx:if="{{afficheSwicth}}">
+    <view class="affiche-content" wx:if="{{afficheSwicthTwo}}">
+        <text class="affiche-title">{{afficheTitle}}</text>
+        <text class="affiche-sold text-left">已售：{{afficheSold}}</text>
+        <view class="affiche-cut">优惠</view>
+        <text class="affiche-init text-left">原价：{{afficheInit}}</text>
+        <text class="affiche-now text-left">现价：{{afficheNow}}</text>
+        <text class="affiche-prefer text-left">{{affichePrefer}}</text>
     </view>
+    <view class="affiche-content" wx:if="{{afficheSwicthOne}}">
+        <view class="affiche-cut">公告</view>
+        <text class="affiche-info text-left">{{headNotice}}</text>
+    </view>
+
     <view class="affiche-cloose">
-      <image src="http://fm.xiaofany.com/shellSmall/cloose.png" bindtap='clooseAffiche'></image>
+        <image src="http://fm.xiaofany.com/shellSmall/cloose.png" bindtap='clooseAffiche'></image>
     </view>
-  </view>
-
+</view>
 
 
 </view>
