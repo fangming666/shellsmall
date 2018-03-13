@@ -12,14 +12,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.request({
-      url: "https://cloudvip.vip/sell/user/openId",
-      method: "POST",
-      success: res => {
-        this.setData({
-          info: res.data.data
+    wx.getStorage({
+      key: 'openID',
+      success: function (res) {
+        wx.request({
+          url: 'https://cloudvip.vip/sell/cart/change',
+          method: "POST",
+          data: { "openId": res.data,"productId":"1","number":1},
+          success:res =>{
+            console.log(res.data)
+          }
         })
-      }
+      },
     })
   },
 

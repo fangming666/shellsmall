@@ -20,22 +20,21 @@
   <!--中间商品区域  -->
  <scroll-view class="goods-warp" scroll-y>
     <view class="goods clearfix" wx:for="{{goods}}" wx:key="key">
-        <image src="{{item.img}}" class="goods-img pull-left" catchtap='openAfficheTwo' data-item="{{index}}"></image>
+         <image src="{{item.imageUrl}}" class="goods-img pull-left" catchtap='openAfficheTwo' data-item="{{index}}"></image> 
         <view class="goods-item pull-left">
             <text class="goods-title" catchtap='openAfficheTwo' data-item="{{index}}">{{item.name}}</text>
             <view class="text-muted clearfix">
                 <text class="pull-left m-r-2">已售{{item.sold}}</text>
-                <text class="pullleft">原价{{item.init}}</text>
+                <text class="pull-left m-r-2">库存{{item.stock}}</text>
             </view>
+             <view class="text-muted">原价{{item.originalPrice}}</view>
             <view class="goods-now clearfix">
-                <text class="text-danger">￥{{item.now}}</text>
-                <!-- <import src="./../../count/count.wxml" />
-                      <template  is="count" data="{{...item.countData}}"></template> -->
+                <text class="text-danger">￥{{item.originalPrice}}</text>
 
                 <view class="clearfix count">
-                    <image class="pull-left reduceBtn" src="http://fm.xiaofany.com/shellSmall/reduce.png" bindtap='reduceNum' data-item="{{index}}" wx:if="{{item.num>0}}"></image>
-                    <text class="pull-left" wx:if="{{item.num>0}}">{{item.num}}</text>
-                    <image class="pull-left addBtn" src="http://fm.xiaofany.com/shellSmall/add.png" bindtap='addNum' data-item="{{index}}"></image>
+                    <image class="pull-left reduceBtn" src="http://fm.xiaofany.com/shellSmall/reduce.png" bindtap='reduceNum' data-index="{{index}}" wx:if="{{item.initNum>0}}"></image>
+                    <text class="pull-left" wx:if="{{item.initNum>0}}">{{item.initNum}}</text>
+                    <image class="pull-left addBtn" src="http://fm.xiaofany.com/shellSmall/add.png" bindtap='addNum' data-index="{{index}}" ></image>
                 </view>
             </view>
         </view>
@@ -97,6 +96,8 @@
     <view class="affiche-content" wx:if="{{afficheSwicthTwo}}">
         <text class="affiche-title">{{afficheTitle}}</text>
         <text class="affiche-sold text-left">已售：{{afficheSold}}</text>
+                        <text class="affiche-sold text-left">库存：{{stock}}</text>
+
         <view class="affiche-cut">优惠</view>
         <text class="affiche-init text-left">原价：{{afficheInit}}</text>
         <text class="affiche-now text-left">现价：{{afficheNow}}</text>

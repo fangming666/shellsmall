@@ -1,6 +1,7 @@
 //index.js
 //获取应用实例
 const app = getApp();
+let buttonFlag = true;
 // 动画
 Page({
   data: {
@@ -24,23 +25,9 @@ Page({
     afficheNow: 1000,
     afficheSold: 10,
     affichePrefer: "这是一个优惠的信息",
-    goods: [{
-      "img": "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg", "name": "这是一个商品的名称", "sold": "10", "init": "2000", "now": "1000", "allNum": 11, "num": 0, "animationData": "", "affichePrefer": "这是一个真的优惠信息"
-    }, {
-      "img": "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg", "name": "这是一个商品的名称", "sold": "10", "init": "2000", "now": "1000", "allNum": 11, "num": 0, "animationData": ""
-    }, {
-      "img": "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg", "name": "这是一个商品的名称", "sold": "10", "init": "2000", "now": "1000", "allNum": 11, "num": 0, "animationData": ""
-    }, {
-      "img": "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg", "name": "这是一个商品的名称", "sold": "10", "init": "2000", "now": "1000", "allNum": 11, "num": 0, "animationData": ""
-    }, {
-      "img": "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg", "name": "这是一个商品的名称", "sold": "10", "init": "2000", "now": "1000", "allNum": 11, "num": 0, "animationData": ""
-    }, {
-      "img": "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg", "name": "这是一个商品的名称", "sold": "10", "init": "2000", "now": "1000", "allNum": 11, "num": 0, "animationData": ""
-    }, {
-      "img": "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg", "name": "这是一个商品的名称", "sold": "10", "init": "2000", "now": "1000", "allNum": 11, "num": 0, "animationData": ""
-    }, {
-      "img": "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg", "name": "这是一个商品的名称", "sold": "10", "init": "2000", "now": "1000", "allNum": 11, "num": 0, "animationData": ""
-    }],
+    goods: [],
+    openId: "",
+    btnDisabled: false
 
   },
   onShow: function () {
@@ -69,28 +56,37 @@ Page({
       }
     })
 
-    /****微信登录时候获取openId***/
-    wx.login({
-      success: res => {
-        if (res.code) {
-          let appId = "wx9c608a6237178170";
-          let secret = "wx9c608a6237178170";
-          wx.request({
-            // url: `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${secret}&js_code=${res.code}&grant_type=authorization_code`,
-          })
-        }
-      }
-    })
-    /**获取商品列表****/
-    // wx.request({
-    //   url: 'https://cloudvip.vip/sell/product/list',
-    //   method: "POST",
-    //   data: {
 
-    //   }
-    // })
+    /**获取商品列表****/
+    let that = this;
+    wx.getStorage({
+      key: 'openID',
+      success: function (res) {
+        that.setData({
+          openId: res.data
+        });
+        wx.request({
+          url: 'https://cloudvip.vip/sell/product/list',
+          method: "POST",
+          data: { "openId": res.data },
+          success: res => {
+            if (res.data.code === 0) {
+              let temporaryGoods = res.data.data;
+              temporaryGoods.map((item) => {
+                item.initNum = 0
+              })
+              that.setData({
+                goods: temporaryGoods
+              });
+            }
+          }
+        })
+      },
+    })
 
   },
+
+  /*******公告栏的跑马灯效果********/
   run2: function () {
     var vm = this;
     var interval = setInterval(function () {
@@ -117,40 +113,59 @@ Page({
       }
     }, vm.data.interval);
   },
+
+  /****减少商品数量的方法****/
   reduceNum(e) {
-    let index = e.currentTarget.dataset.item;
-    let allNum = this.data.allGoodsNum;
+    if (!buttonFlag) return;
+    let index = e.currentTarget.dataset.index;
     let resultArr = this.data.goods;
-    if (resultArr[index].num == 0) {
-      resultArr[index].num = 0;
-
+    if (resultArr[index].initNum == 0) {
+      resultArr[index].initNum = 0;
     } else {
-      resultArr[index].num = resultArr[index].num - 1;
-      this.setData({
-        allGoodsNum: allNum - 1
-      })
+      resultArr[index].initNum = resultArr[index].initNum - 1;
     };
     this.setData({
       goods: resultArr
+    });
+    buttonFlag = false;
+    wx.request({
+      url: 'https://cloudvip.vip/sell/cart/change',
+      method: "POST",
+      data: { "openId": this.data.openId, "productId": resultArr[index].id, "number": resultArr[index].initNum },
+      success: res => {
+        if (res.data.code === 0) {
+          buttonFlag = true;
+        }
+      }
     })
   },
+  /*******增加商品数量的方法*********/
   addNum(e) {
-    let index = e.currentTarget.dataset.item;
+    if (!buttonFlag) return;
+    let index = e.currentTarget.dataset.index;
     let resultArr = this.data.goods;
-    let allNum = this.data.allGoodsNum;
-    if (resultArr[index].num == resultArr[index].allNum) {
-      resultArr[index].num = resultArr[index].allNum
+    if (resultArr[index].initNum == resultArr[index].stock) {
+      resultArr[index].initNum = resultArr[index].stock;
     } else {
-      resultArr[index].num = resultArr[index].num + 1;
-      this.setData({
-        allGoodsNum: allNum + 1
-      })
+      resultArr[index].initNum = resultArr[index].initNum + 1;
     };
     this.setData({
       goods: resultArr
+    });
+    buttonFlag = false;
+    wx.request({
+      url: 'https://cloudvip.vip/sell/cart/change',
+      method: "POST",
+      data: { "openId": this.data.openId, "productId": resultArr[index].id, "number": resultArr[index].initNum },
+      success: res => {
+        if (res.data.code === 0) {
+          buttonFlag = true;
+        }
+      }
     })
   },
 
+  /*****显示购物车******/
   toggleCard() {
     let cardSwitchS = this.data.cardSwitch
     this.setData({
@@ -158,33 +173,38 @@ Page({
     });
 
   },
+  /******关闭购物车*****/
   clooseCard() {
     this.setData({
       cardSwitch: false
     })
   },
+
+  /****关闭公告模态框*****/
   clooseAffiche() {
-    console.log(this.data.afficheSwicth);
     this.setData({
       afficheSwicth: false,
       afficheSwicthOne: false,
       afficheSwicthTwo: false
     })
   },
+  /****打开公告模态框***/
   openAfficheOne() {
     this.setData({
       afficheSwicth: true,
       afficheSwicthOne: true
     })
   },
+  /***打开商品模态框***/
   openAfficheTwo(e) {
     let index = e.currentTarget.dataset.item;
     this.setData({
       afficheTitle: this.data.goods[index].name,
-      afficheInit: this.data.goods[index].init,
-      afficheNow: this.data.goods[index].now,
+      afficheInit: this.data.goods[index].originalPrice,
+      afficheNow: this.data.goods[index].presentPrice,
       afficheSold: this.data.goods[index].sold,
-      affichePrefer: this.data.goods[index].affichePrefer,
+      affichePrefer: this.data.goods[index].preferential,
+      stock: this.data.goods[index].stock,
       afficheSwicth: true,
       afficheSwicthTwo: true
     })
