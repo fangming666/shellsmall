@@ -20,7 +20,7 @@
 
 .pay-number>text {
     color: lightgray;
-    margin-left: 300rpx;
+    margin-left: 250rpx;
     font-size: 0.8rem;
 }
 
@@ -59,6 +59,26 @@
     right: -10px;
     top: -15px;
     border-radius: 50%;
+}
+
+.example {
+    display: block;
+    overflow: hidden;
+    width: 80%;
+    margin-left: 0.5rem;
+    height: 28px;
+    color: lightgray;
+}
+
+.marquee_box {
+    width: 100%;
+    position: relative;
+}
+
+.marquee_text {
+    white-space: nowrap;
+    position: absolute;
+    top: 6px;
 }
 
 .shopping-item>image {
@@ -134,12 +154,6 @@
     background-color: lightgray;
 }
 
-.head-notice-info {
-    margin-left: 1rem;
-    font-size: 1rem;
-    color: lightgray;
-}
-
 .goods-warp {
     height: calc(100vh - 140px);
     padding: 10px 0;
@@ -147,7 +161,7 @@
 
 .goods {
     width: 100%;
-    height: 160rpx;
+    height: 210rpx;
     padding: 10rpx;
     margin-bottom: 10rpx;
     box-sizing: border-box;
@@ -155,10 +169,10 @@
 }
 
 .goods-img {
-    width: 140rpx;
-    height: 140rpx;
+    width: 160rpx;
+    height: 160rpx;
     margin-right: 50rpx;
-    margin-left: 50rpx;
+    margin-left: 20rpx;
 }
 
 .goods-title {
@@ -176,13 +190,15 @@
 
 .goods-now {
     margin-top: 10rpx;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
 }
 
 .goods-now>.count {
     float: right;
-    margin-right: 3rem;
+    margin-right: 1rem;
+    height: 40rpx;
+    line-height: 40rpx;
 }
 
 .shopping-trolley {
