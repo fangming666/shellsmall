@@ -1,4 +1,3 @@
-// pages/key/key.js
 Page({
 
   /**
@@ -6,21 +5,41 @@ Page({
    */
   data: {
     keyTitle: "Key列表",
-    keyList: [{ "key": "key1", "token": "abc", "switch": false, "emailText": "456", "emailSwitch": false }, { "key": "key1", "token": "abc", "switch": false, "emailText": "456", "emailSwitch": false }, { "key": "key1", "token": "abc", "switch": false, "emailText": "456", "emailSwitch": false }, { "key": "key1", "token": "abc", "switch": false, "emailText": "456", "emailSwitch": false }, { "key": "key1", "token": "abc", "switch": false, "emailText": "456", "emailSwitch": false }, { "key": "key1", "token": "abc", "switch": false, "emailText": "456", "emailSwitch": false }]
+    keyList: [],
+    openId: ""
   },
+
 
 
   /*邮箱验证函数*/
   verify(e) {
     let index = e.currentTarget.dataset.item;
     let arr = this.data.keyList;
-    arr[index].emailText = e.detail.value;
+    arr[index].email = e.detail.value;
+    console.log(e.detail.value);
     let reg = new RegExp(/^([a-zA-Z0-9._-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/);
-    if (!reg.test(arr[index].emailText)) {
+    if (!reg.test(arr[index].email)) {
       arr[index].emailSwitch = true;
-    }else{
+    } else {
       arr[index].emailSwitch = false;
-    }
+    };
+    this.setData({
+      keyList: arr
+    })
+  },
+  /**输入框输入的值**/
+  getAppId(e){
+    let index = e.currentTarget.dataset.item;
+    let arr = this.data.keyList;
+    arr[index].appId = e.detail.value;
+    this.setData({
+      keyList: arr
+    })
+  },
+  getSecret(e) {
+    let index = e.currentTarget.dataset.item;
+    let arr = this.data.keyList;
+    arr[index].secret = e.detail.value;
     this.setData({
       keyList: arr
     })
@@ -29,63 +48,62 @@ Page({
  * 生命周期函数--监听页面加载
  */
   onLoad: function (options) {
+    /********获取key列表*****/
+    let that = this;
+    wx.getStorage({
+      key: 'openID',
+      success: function (res) {
+        that.setData({
+          openId: res.data
+        });
+        wx.request({
+          url: 'https://cloudvip.vip/sell/key/list',
+          method: "POST",
+          data: { "openId": res.data },
+          success: res => {
+            let arr = res.data.data;
+            arr.map((item) => {
+              item.emailSwitch = false;
+              item.openSwitch = false
+            });
+            that.setData({
+              keyList: arr
+            })
+          }
+        });
 
+
+      },
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  },
+  /***打开/关闭详情页的开关****/
   openKeyList(e) {
     let index = e.currentTarget.dataset.item;
     let arr = this.data.keyList;
-    arr[index].switch = !arr[index].switch;
+    arr[index].openSwitch = !arr[index].openSwitch;
     this.setData({
       keyList: arr
     })
+  },
+
+  /****保存数据*****/
+  saveData(e) {
+    let index = e.currentTarget.dataset.item;
+    let arr = this.data.keyList;
+    wx.request({
+      url: "https://cloudvip.vip/sell/key/save",
+      method: "POST",
+      data: {
+        "openId": this.data.openId, "key": arr[index].key, "appId":arr[index].appId,"secret":arr[index].secret,"email":arr[index].email},
+      success: res => {
+          console.log(res.data);
+          if (res.data.code == 0) {
+            arr[index].editFlag = 0;
+            this.setData({
+              keyList: arr
+            })
+          }
+        }
+      })
   }
 })

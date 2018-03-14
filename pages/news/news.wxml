@@ -1,19 +1,19 @@
 <!--pages/news/news.wxml-->
 <view class="news-warp">
   <view class="news-title">{{newsTitle}}</view>
-  <view wx:for="{{newsList}}"  wx:key="key" class="news-list">
-    <view class="news-time">{{item.time}}</view>
+  <view wx:for="{{newsList}}" wx:key="key" class="news-list">
+    <view class="news-time">{{item.timeStamp}}</view>
     <view class="news-info clearfix">
-      <image class="pull-left" src="{{item.img}}"></image>
+      <image class="pull-left" src="{{item.author?item.img:userInfo.avatarUrl}}"></image>
       <view class=" pull-left">
-        <text class="news-name ">{{item.name}}</text>
-        <text class="news-text ">{{item.text}}</text>
+        <text class="news-name ">{{item.author?"系统":userInfo.nickName}}</text>
+        <text class="news-text ">{{item.msg}}</text>
       </view>
     </view>
   </view>
 
   <view class="clearfix dialog-box">
-  <input class="pull-left" />
-  <button size="mini" class="pull-left" type="primary">发送</button>
+    <input class="pull-left" bindinput='getInfo' value="{{sendInfo}}" />
+    <button size="mini" class="pull-left" catchtap='sendMsg' type="primary">发送</button>
   </view>
 </view>

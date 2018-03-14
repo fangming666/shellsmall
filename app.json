@@ -1,11 +1,11 @@
 {
   "pages": [
-
     "pages/index/index",
     "pages/key/key",
     "pages/news/news",
+    "pages/order/order",
     "pages/my/my",
-    "pages/order/order"
+    "pages/animate/animate"
   ],
   "window": {
     "backgroundTextStyle": "light",

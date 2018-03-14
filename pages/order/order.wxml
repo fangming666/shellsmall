@@ -1,11 +1,13 @@
 <!--pages/order/order.wxml-->
 <view class="order-warp">
   <view class="order-head">{{orderTitle}}</view>
-  <view class="order-time">{{orderTime}}</view>
+  <view class="order-time">时间：{{orderTime}}</view>
   <view class="order-buy-num">购买数量:{{orderBuyNum}}</view>
-  <view class="order-money">已支付:{{orderMoney}}</view>
-  <view class="order-list" wx:for="{{orderList}}"  wx:key="key">
-    <text>订单编号：{{item.orderNum}}</text>
-    <text>key:{{item.orderKey}}</text>
+  <view class="order-money">
+    <text class="m-r-1">支付状态:{{payFlag}}</text>
+    <text>订单编号：{{orderNum}}</text>
+  </view>
+  <view class="order-list" wx:for="{{orderList}}" wx:key="key">
+    <text>key:{{item}}</text>
   </view>
 </view>

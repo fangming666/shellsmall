@@ -8,9 +8,9 @@ Page({
   data: {
     userInfo: {},
     hasUserInfo: false,
-    myList: [{ "href": "/pages/order/order", "text": "name1", "img": "http://fm.xiaofany.com/shellSmall/dingDan.jpg" },
-    { "href": "/pages/key/key", "text": "name2", "img": "http://fm.xiaofany.com/shellSmall/key.jpg" },
-    { "href": "/pages/news/news", "text": "name3", "img": "http://fm.xiaofany.com/shellSmall/xiaoXi.jpg" }]
+    myList: [{ "href": "/pages/order/order", "text": "订单", "img": "http://fm.xiaofany.com/shellSmall/dingDan.jpg" },
+    { "href": "/pages/key/key", "text": "key", "img": "http://fm.xiaofany.com/shellSmall/key.jpg" },
+    { "href": "/pages/news/news", "text": "消息列表", "img": "http://fm.xiaofany.com/shellSmall/xiaoXi.jpg" }]
   },
 
   /**
@@ -48,7 +48,7 @@ Page({
           })
         }
       })
-    }
+    };
   },
 
   /**
@@ -57,11 +57,4 @@ Page({
   onReady: function () {
 
   },
-
-  getMyInfo() {
-    this.setData({
-      mySculpture: globalData.userInfo.avatarUrl,
-      myName: globalData.userInfo.nickName
-    })
-  }
 })

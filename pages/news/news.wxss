@@ -1,7 +1,7 @@
 /* pages/news/news.wxss */
 
 .news-warp {
-  padding: 0.7rem 0;
+  padding: 0.7rem 0 110rpx;
 }
 
 .news-title {
@@ -40,7 +40,10 @@
 }
 
 .news-text {
+  display: inline-block;
   font-size: 15px;
+  width: 12rem;
+  white-space: normal;
 }
 
 .dialog-box {
