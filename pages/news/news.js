@@ -90,6 +90,10 @@ Page({
   },
   /***点击发送触发的事件****/
   sendMsg() {
+    wx.showToast({
+      title: '发送中',
+      icon:"none"
+    })
     let that = this;
     wx.request({
       url: "https://cloudvip.vip/sell/message/send",
@@ -104,7 +108,11 @@ Page({
           that.setData({
             sendInfo: ""
           });
-          that.getNews()
+          that.getNews();
+          wx.showToast({
+            title: '发送成功',
+            icon: "success"
+          })
         }
       }
     })

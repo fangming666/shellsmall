@@ -186,13 +186,16 @@ Page({
 
   /****减少商品数量的方法****/
   reduceNum(e) {
+    wx.showLoading({
+    });
     if (!buttonFlag) return;
     let allNum = this.data.allGoodsNum;
+    let stop = false;
     let id = e.currentTarget.dataset.index;
     let resultArr = this.data.goods;
     let cartArr = this.data.cartGoods;
     let goodIndex = "";
-    let reduceFuc = (arr) => {
+    let reduceFuc = (arr, dis) => {
       arr.map((item, index) => {
         if (item.id == id) {
           goodIndex = index;
@@ -200,17 +203,29 @@ Page({
       })
       if (arr[goodIndex].number == 0) {
         arr[goodIndex].number = 0;
+        stop = true;
       } else {
         arr[goodIndex].number = arr[goodIndex].number - 1;
       };
-      allNum = arr[goodIndex].number
+      if (dis) {
+        if (stop) {
+          allNum = allNum;
+        } else {
+          allNum = allNum - 1;
+        }
+        this.setData({
+          allGoodsNum: allNum
+        })
+      }
     }
-    reduceFuc(cartArr);
-    reduceFuc(resultArr);
+    if (this.data.cardSwitch) {
+      reduceFuc(cartArr, 0);
+    }
+    reduceFuc(resultArr, 1);
     this.setData({
       goods: resultArr,
       cartGoods: cartArr,
-      allGoodsNum: allNum
+
     });
     buttonFlag = false;
     wx.request({
@@ -220,20 +235,24 @@ Page({
       success: res => {
         if (res.data.code === 0) {
           buttonFlag = true;
-          this.inquiryPrice()
+          this.inquiryPrice();
+          wx.hideLoading();
         }
       }
     })
   },
   /*******增加商品数量的方法*********/
   addNum(e) {
+    wx.showLoading({
+    });
     if (!buttonFlag) return;
+    let stop = false;
     let allNum = this.data.allGoodsNum;
     let id = e.currentTarget.dataset.index;
     let resultArr = this.data.goods;
     let cartArr = this.data.cartGoods;
     let goodIndex = "";
-    let addFuc = (arr) => {
+    let addFuc = (arr, dis) => {
       arr.map((item, index) => {
         if (item.id == id) {
           goodIndex = index;
@@ -241,20 +260,29 @@ Page({
       })
       if (arr[goodIndex].number == arr[goodIndex].stock) {
         arr[goodIndex].number = arr[goodIndex].stock;
+        stop = true;
       } else {
         arr[goodIndex].number = arr[goodIndex].number + 1;
       };
-      allNum = arr[goodIndex].number
+      if (dis) {
+        if (stop) {
+          allNum = allNum;
+        } else {
+          allNum = allNum + 1;
+        }
+        this.setData({
+          allGoodsNum: allNum
+        })
+      }
     }
 
     if (this.data.cardSwitch) {
-      addFuc(cartArr);
+      addFuc(cartArr, 0);
     }
-    addFuc(resultArr);
+    addFuc(resultArr, 1);
     this.setData({
       goods: resultArr,
       cartGoods: cartArr,
-      allGoodsNum: allNum
     });
     buttonFlag = false;
     wx.request({
@@ -264,7 +292,8 @@ Page({
       success: res => {
         if (res.data.code === 0) {
           buttonFlag = true;
-          this.inquiryPrice()
+          this.inquiryPrice();
+          wx.hideLoading();
         }
       }
     })

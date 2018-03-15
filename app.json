@@ -4,8 +4,7 @@
     "pages/key/key",
     "pages/news/news",
     "pages/order/order",
-    "pages/my/my",
-    "pages/animate/animate"
+    "pages/my/my"
   ],
   "window": {
     "backgroundTextStyle": "light",

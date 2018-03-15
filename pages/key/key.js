@@ -88,6 +88,9 @@ Page({
 
   /****保存数据*****/
   saveData(e) {
+    wx.showLoading({
+      title: '保存中',
+    })
     let index = e.currentTarget.dataset.item;
     let arr = this.data.keyList;
     wx.request({
@@ -101,6 +104,15 @@ Page({
             arr[index].editFlag = 0;
             this.setData({
               keyList: arr
+            });
+            wx.hideLoading();
+            wx.showToast({
+              title: "保存成功",
+              type:"success"
+            })
+          }else{
+            wx.showToast({
+              title:"保存失败"
             })
           }
         }
