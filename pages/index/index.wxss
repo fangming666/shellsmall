@@ -311,3 +311,13 @@
   right: 40rpx;
   top: 20rpx;
 }
+
+.addBtn {
+  width:40rpx;
+  height: 40rpx;
+}
+
+.reduceBtn {
+  width: 40rpx;
+  height: 40rpx;
+}

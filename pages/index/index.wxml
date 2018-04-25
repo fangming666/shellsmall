@@ -10,7 +10,7 @@
         <view class="marquee_box">
           <view class="marquee_text" style="{{orientation}}:{{marqueeDistance2}}px;font-size: {{size}}px;">
             <text>{{headNotice}}</text>
-              <text wx:if="{{marquee2copy_status}}" style="margin-left:{{marquee2_margin}}px;">{{headNotice}}</text>
+              <text hidden="{{!marquee2copy_status}}" style="margin-left:{{marquee2_margin}}px;">{{headNotice}}</text>
           </view>
         </view>
       </view>
@@ -18,7 +18,7 @@
   </view>
 
   <!--中间商品区域  -->
- <scroll-view class="goods-warp" scroll-y>
+  <scroll-view class="goods-warp" scroll-y>
     <view class="goods clearfix" wx:for="{{goods}}" wx:key="key">
          <image src="{{item.imageUrl}}" class="goods-img pull-left" catchtap='openAfficheTwo' data-item="{{index}}"></image> 
         <view class="goods-item pull-left">
@@ -32,14 +32,14 @@
                 <text class="text-danger">￥{{item.originalPrice}}</text>
 
                 <view class="clearfix count">
-                    <image class="pull-left reduceBtn" src="http://fm.xiaofany.com/shellSmall/reduce.png" bindtap='reduceNum' data-index="{{item.id}}" wx:if="{{item.number>0}}"></image>
-                    <text class="pull-left" wx:if="{{item.number>0}}">{{item.number}}</text>
+                    <image class="pull-left reduceBtn" src="http://fm.xiaofany.com/shellSmall/reduce.png" bindtap='reduceNum' data-index="{{item.id}}" hidden="{{item.number<=0}}"></image>
+                    <text class="pull-left" hidden="{{item.number<=0}}">{{item.number}}</text>
                     <image class="pull-left addBtn" src="http://fm.xiaofany.com/shellSmall/add.png" bindtap='addNum' data-index="{{item.id}}" ></image>
                 </view>
             </view>
         </view>
     </view>
-</scroll-view>
+</scroll-view> 
 
 
 
@@ -48,8 +48,8 @@
     <view class="pay-number" bindtap='toggleCard'>
         <view class="shopping-cart">
             <view class="shopping-item" >
-                <image src="./../../img/cart.png" ></image>
-                <text class="cart-num" wx:if="{{allGoodsNum}}">{{allGoodsNum}}</text>
+                <image src="http://fm.xiaofany.com/shellSmall/cart.png" ></image>
+                <text class="cart-num" hidden="{{!allGoodsNum}}">{{allGoodsNum}}</text>
             </view>
         </view>
         <text>{{allRate}}</text>
@@ -59,7 +59,7 @@
 
 
 <!----购物车  -->
-<view  animation="{{animationData}}" class="shopping-trolley"  wx:if="{{cardSwitch}}">
+<view  animation="{{animationData}}" class="shopping-trolley"  hidden="{{!cardSwitch}}">
     <view class="clooseCard" bindtap='closeCard'>
     </view>
     <view class="shopping-trolley-title">购物车
@@ -79,8 +79,8 @@
                 <text class="text-danger">￥{{item.originalPrice}}</text>
 
                 <view class="clearfix count">
-                    <image class="pull-left reduceBtn" src="http://fm.xiaofany.com/shellSmall/reduce.png" bindtap='reduceNum' data-index="{{item.id}}" wx:if="{{item.number>0}}"></image>
-                    <text class="pull-left" wx:if="{{item.number>0}}">{{item.number}}</text>
+                    <image class="pull-left reduceBtn" src="http://fm.xiaofany.com/shellSmall/reduce.png" bindtap='reduceNum' data-index="{{item.id}}" hidden="{{item.number<=0}}"></image>
+                    <text class="pull-left" hidden="{{item.number<=0}}">{{item.number}}</text>
                     <image class="pull-left addBtn" src="http://fm.xiaofany.com/shellSmall/add.png" bindtap='addNum' data-index="{{item.id}}" ></image>
                 </view>
             </view>
@@ -91,8 +91,8 @@
 
 
 <!-----公告栏  ----->
-<view class="affiche-box" wx:if="{{afficheSwicth}}" animation="{{animationAffiche}}">
-    <view class="affiche-content" wx:if="{{afficheSwicthTwo}}">
+<view class="affiche-box" hidden="{{!afficheSwicth}}" animation="{{animationAffiche}}">
+    <view class="affiche-content" hidden="{{!afficheSwicthTwo}}">
         <text class="affiche-title">{{afficheTitle}}</text>
         <text class="affiche-sold text-left">已售：{{afficheSold}}</text>
                         <text class="affiche-sold text-left">库存：{{stock}}</text>
@@ -102,7 +102,7 @@
         <text class="affiche-now text-left">现价：{{afficheNow}}</text>
         <text class="affiche-prefer text-left">{{affichePrefer}}</text>
     </view>
-    <view class="affiche-content" wx:if="{{afficheSwicthOne}}">
+    <view class="affiche-content" hidden="{{!afficheSwicthOne}}">
         <view class="affiche-cut">公告</view>
         <text class="affiche-info text-left">{{headNotice}}</text>
     </view>
