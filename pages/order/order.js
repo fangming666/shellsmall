@@ -1,5 +1,6 @@
 // pages/order/order.js
 const app = getApp();
+const baseUrl = app.globalData.baseUrl;
 Page({
 
   /**
@@ -8,11 +9,7 @@ Page({
   data: {
     orderTitle: "订单列表",
     openId: "",
-    orderTime: "",
-    orderBuyNum: "",
-    payFlag: "",
-    orderNum:"",
-    orderList: [],
+    arr:[]
   },
 
   /**
@@ -27,23 +24,23 @@ Page({
         that.setData({
           openId: res.data
         });
-        wx.request({
-          url: 'https://cloudvip.vip/sell/order/list',
-          method: "POST",
-          data: { "openId": res.data },
-          success: res => {
-            if (res.data.code === 0) {
-              console.log(res.data);
-              that.setData({
-                orderTime: res.data.data.timeStamp,
-                orderBuyNum: res.data.data.number,
-                payFlag: res.data.data.payFlag ? "已支付" : "未支付",
-                orderNum: res.data.data.unionCode,
-                orderList: res.data.data.keys
-              })
+        console.log(res.data)
+        if(res.data){
+          wx.request({
+            url: `${baseUrl}/sell/order/payList`,
+            method: "POST",
+            data: { "openId": res.data },
+            success: res => {
+              if (res.data.code === 0) {
+                console.log(res.data);
+                that.setData({
+                  arr:res.data.data
+                })
+              }
             }
-          }
-        });
+          });
+        }
+       
 
 
       },

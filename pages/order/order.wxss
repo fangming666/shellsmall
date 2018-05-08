@@ -19,7 +19,7 @@
 .order-money {
   font-size: 14px;
   color: #9b9b9b;
-  margin-bottom: 1rem;
+  margin-bottom: .6rem;
 }
 
 .order-list {
@@ -32,4 +32,7 @@
 
 .order-list>text {
   margin-right: 4rem;
+}
+.order-buy-num{
+  margin-bottom: .4rem
 }

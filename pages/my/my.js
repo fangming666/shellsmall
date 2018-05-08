@@ -1,5 +1,6 @@
 // pages/my/my.js
-const app = getApp(); //设置全局变量
+const app = getApp();
+const baseUrl = app.globalData.baseUrl;
 Page({
 
   /**

@@ -1,5 +1,6 @@
 // pages/news/news.js
 const app = getApp();
+const baseUrl = app.globalData.baseUrl;
 Page({
 
   /**
@@ -70,21 +71,24 @@ Page({
         that.setData({
           openId: res.data
         });
-        wx.request({
-          url: 'https://cloudvip.vip/sell/message/list',
-          method: "POST",
-          data: { "openId": res.data },
-          success: res => {
-            let arr = res.data.data;
-            res.data.data.map((item, index) => {
-              /***0是用户,1是系统**/
-              item.img = "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg"
-            });
-            that.setData({
-              newsList: arr
-            })
-          },
-        })
+        if(res.data){
+          wx.request({
+            url: `${baseUrl}/sell/message/list`,
+            method: "POST",
+            data: { "openId": res.data },
+            success: res => {
+              let arr = res.data.data;
+              res.data.data.map((item, index) => {
+                /***0是用户,1是系统**/
+                item.img = "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/151fd1ab20c7d69f611a07096a65b672_121_121.jpg"
+              });
+              that.setData({
+                newsList: arr
+              })
+            },
+          })
+        }
+       
       }
     })
   },
@@ -96,7 +100,7 @@ Page({
     })
     let that = this;
     wx.request({
-      url: "https://cloudvip.vip/sell/message/send",
+      url: `${baseUrl}/sell/message/send`,
       method: "POST",
       data: {
         "openId": this.data.openId,

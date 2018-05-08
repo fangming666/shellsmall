@@ -2,6 +2,7 @@
 //获取应用实例
 const app = getApp();
 let buttonFlag = true;
+const baseUrl = app.globalData.baseUrl;
 // 动画
 Page({
   data: {
@@ -40,7 +41,7 @@ Page({
   onLoad: function () {
     /*****获取公告信息***/
     wx.request({
-      url: 'https://cloudvip.vip/sell/bulletin/info',
+      url: `${baseUrl}/sell/bulletin/info`,
       method: "GET",
       success: (res) => {
         if (res.statusCode === 200) {
@@ -61,6 +62,7 @@ Page({
 
     this.getGoods();
 
+
   },
   /*****下拉刷新****/
   onPullDownRefresh: function () {
@@ -72,27 +74,30 @@ Page({
         that.setData({
           openId: res.data
         });
-        wx.request({
-          url: 'https://cloudvip.vip/sell/product/list',
-          method: "POST",
-          data: { "openId": res.data },
-          success: res => {
-            if (res.data.code === 0) {
-              wx.hideNavigationBarLoading() //完成停止加载
-              wx.stopPullDownRefresh() //停止下拉刷新
-              that.clearCart();
-              let temporaryGoods = res.data.data;
-              temporaryGoods.map((item) => {
-                item.number = 0
-              });
-              that.setData({
-                goods: temporaryGoods
-              });
+        if (res.data) {
+          wx.request({
+            url: `${baseUrl}/sell/product/list`,
+            method: "POST",
+            data: { "openId": res.data },
+            success: res => {
+              if (res.data.code === 0) {
+                wx.hideNavigationBarLoading() //完成停止加载
+                wx.stopPullDownRefresh() //停止下拉刷新
+                that.clearCart();
+                let temporaryGoods = res.data.data;
+                temporaryGoods.map((item) => {
+                  item.number = 0
+                });
+                that.setData({
+                  goods: temporaryGoods
+                });
+              }
             }
-          }
-        });
-        /**获取购物车的总价格****/
-        that.inquiryPrice();
+          });
+          /**获取购物车的总价格****/
+          that.inquiryPrice();
+        }
+
         wx.showToast({
           title: '刷新完成',
           icon: 'none',
@@ -120,24 +125,40 @@ Page({
         that.setData({
           openId: res.data
         });
-        wx.request({
-          url: 'https://cloudvip.vip/sell/product/list',
-          method: "POST",
-          data: { "openId": res.data },
-          success: res => {
-            if (res.data.code === 0) {
-              let temporaryGoods = res.data.data;
-              temporaryGoods.map((item) => {
-                item.number = 0
-              });
-              that.setData({
-                goods: temporaryGoods
-              });
+        if (res.data) {
+          wx.request({
+            url: `${baseUrl}/sell/product/list`,
+            method: "POST",
+            data: { "openId": res.data },
+            success: res => {
+              if (res.data.code === 0) {
+                let temporaryGoods = res.data.data;
+                temporaryGoods.map((item) => {
+                  item.number = 0
+                });
+                that.setData({
+                  goods: temporaryGoods
+                });
+              }
             }
-          }
-        });
-        /**获取购物车的总价格****/
-        that.inquiryPrice();
+          });
+          /**获取购物车的总价格****/
+          that.inquiryPrice();
+          /**获得购物车的总数量**/
+          wx.request({
+            url: `${baseUrl}/sell/cart/list`,
+            method: "POST",
+            data: { "openId": res.data },
+            success: res => {
+              if (res.data.data.length) {
+                that.setData({
+                  allGoodsNum: res.data.data.length
+                })
+              } else {
+              }
+            }
+          })
+        }
 
 
       },
@@ -156,7 +177,7 @@ Page({
       let that = this;
       /*****获取购物车列表****/
       wx.request({
-        url: 'https://cloudvip.vip/sell/cart/list',
+        url: `${baseUrl}/sell/cart/list`,
         method: "POST",
         data: { "openId": that.data.openId },
         success: res => {
@@ -169,7 +190,7 @@ Page({
               }
             })
           });
-          arr = that.data.allGoodsNum <= 0 ? [] : arr;
+          // arr = that.data.allGoodsNum <= 0 ? [] : arr;
           that.setData({
             cartGoods: arr
           })
@@ -280,7 +301,7 @@ Page({
     }
     buttonFlag = false;
     wx.request({
-      url: 'https://cloudvip.vip/sell/cart/change',
+      url: `${baseUrl}/sell/cart/change`,
       method: "POST",
       data: { "openId": this.data.openId, "productId": id, "number": resultArr[goodIndex].number },
       success: res => {
@@ -346,15 +367,20 @@ Page({
     });
     buttonFlag = false;
     wx.request({
-      url: 'https://cloudvip.vip/sell/cart/change',
+      url: `${baseUrl}/sell/cart/change`,
       method: "POST",
       data: { "openId": this.data.openId, "productId": id, "number": resultArr[goodIndex].number },
       success: res => {
         if (res.data.code === 0) {
           buttonFlag = true;
           this.inquiryPrice();
-          wx.hideLoading();
         }
+        else {
+          console.log(res.data);
+        }
+      },
+      complete: () => {
+        wx.hideLoading();
       }
     })
   },
@@ -364,14 +390,14 @@ Page({
   /****查询购物车的价格***/
   inquiryPrice() {
     wx.request({
-      url: 'https://cloudvip.vip/sell/cart/totalPrice',
+      url: `${baseUrl}/sell/cart/totalPrice`,
       method: "POST",
       data: { "openId": this.data.openId },
       success: res => {
         this.setData({
           allRate: res.data.data.totalPrice
         })
-      }
+      },
     })
 
   },
@@ -380,7 +406,7 @@ Page({
   /*******清空购物车*****/
   clearCart() {
     wx.request({
-      url: "https://cloudvip.vip/sell/cart/clear",
+      url: `${baseUrl}/sell/cart/clear`,
       method: "POST",
       data: { "openId": this.data.openId },
       success: res => {
@@ -456,4 +482,54 @@ Page({
       animationAffiche: this.animation.export(),
     });
   },
+
+  // 进行支付
+  clickPay() {
+
+    wx.request({
+      url: `${baseUrl}/sell/cart/list`,
+      method: "POST",
+      data: { "openId": this.data.openId },
+      success: res => {
+        if (res.data.data.length) {
+          wx.request({
+            url: `${baseUrl}/sell/user/pay`,
+            method: "POST",
+            data: { "openId": this.data.openId },
+            success: res => {
+              wx.requestPayment({
+                'timeStamp': ""+JSON.parse(res.data.data).timeStamp,
+                'nonceStr': JSON.parse(res.data.data).nonceStr,
+                'package': JSON.parse(res.data.data).package,
+                'signType': JSON.parse(res.data.data).signType,
+                'paySign': JSON.parse(res.data.data).paySign,
+                'success': function (res) {
+                  console.log(res);
+                  wx.showToast({
+                    title: '支付成功',
+                    icon: 'success',
+                    duration: 1500
+                  })
+                },
+                'fail': function (res) {
+                  console.log(res);
+                  wx.showToast({
+                    title: '支付失败',
+                    icon: 'none',
+                    duration: 1500
+                  })
+                }
+              })
+            }
+          })
+        } else {
+          wx.showToast({
+            title: '购物车为空，请添加商品',
+            icon: 'none',
+            duration: 1000
+          })
+        }
+      }
+    })
+  }
 })

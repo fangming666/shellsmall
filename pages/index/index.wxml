@@ -18,7 +18,7 @@
   </view>
 
   <!--中间商品区域  -->
-  <scroll-view class="goods-warp" scroll-y>
+ <scroll-view class="goods-warp" scroll-y>
     <view class="goods clearfix" wx:for="{{goods}}" wx:key="key">
          <image src="{{item.imageUrl}}" class="goods-img pull-left" catchtap='openAfficheTwo' data-item="{{index}}"></image> 
         <view class="goods-item pull-left">
@@ -39,7 +39,7 @@
             </view>
         </view>
     </view>
-</scroll-view> 
+</scroll-view>
 
 
 
@@ -54,9 +54,8 @@
         </view>
         <text>{{allRate}}</text>
     </view>
-    <view class="pay-btn">支付</view>
+    <view class="pay-btn" bindtap='clickPay'>支付</view>
 </view>
-
 
 <!----购物车  -->
 <view  animation="{{animationData}}" class="shopping-trolley"  hidden="{{!cardSwitch}}">
@@ -88,6 +87,7 @@
     </view>
 </scroll-view>
 </view>
+
 
 
 <!-----公告栏  ----->

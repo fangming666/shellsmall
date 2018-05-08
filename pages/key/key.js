@@ -1,3 +1,5 @@
+const app = getApp();
+const baseUrl = app.globalData.baseUrl;
 Page({
 
   /**
@@ -28,7 +30,7 @@ Page({
     })
   },
   /**输入框输入的值**/
-  getAppId(e){
+  getAppId(e) {
     let index = e.currentTarget.dataset.item;
     let arr = this.data.keyList;
     arr[index].appId = e.detail.value;
@@ -56,21 +58,25 @@ Page({
         that.setData({
           openId: res.data
         });
-        wx.request({
-          url: 'https://cloudvip.vip/sell/key/list',
-          method: "POST",
-          data: { "openId": res.data },
-          success: res => {
-            let arr = res.data.data;
-            arr.map((item) => {
-              item.emailSwitch = false;
-              item.openSwitch = false
-            });
-            that.setData({
-              keyList: arr
-            })
-          }
-        });
+        if (res.data) {
+          wx.request({
+            url: `${baseUrl}/sell/key/list`,
+            method: "POST",
+            data: { "openId": res.data },
+            success: res => {
+              console.log(res.data);
+              let arr = res.data.data;
+              arr.map((item) => {
+                item.emailSwitch = false;
+                item.openSwitch = false
+              });
+              that.setData({
+                keyList: arr
+              })
+            }
+          });
+        }
+
 
 
       },
@@ -94,28 +100,29 @@ Page({
     let index = e.currentTarget.dataset.item;
     let arr = this.data.keyList;
     wx.request({
-      url: "https://cloudvip.vip/sell/key/save",
+      url: `${baseUrl}/sell/key/save`,
       method: "POST",
       data: {
-        "openId": this.data.openId, "key": arr[index].key, "appId":arr[index].appId,"secret":arr[index].secret,"email":arr[index].email},
+        "openId": this.data.openId, "key": arr[index].key, "appId": arr[index].appId, "secret": arr[index].secret, "email": arr[index].email
+      },
       success: res => {
-          console.log(res.data);
-          if (res.data.code == 0) {
-            arr[index].editFlag = 0;
-            this.setData({
-              keyList: arr
-            });
-            wx.hideLoading();
-            wx.showToast({
-              title: "保存成功",
-              type:"success"
-            })
-          }else{
-            wx.showToast({
-              title:"保存失败"
-            })
-          }
+        console.log(res.data);
+        if (res.data.code == 0) {
+          arr[index].editFlag = 0;
+          this.setData({
+            keyList: arr
+          });
+          wx.hideLoading();
+          wx.showToast({
+            title: "保存成功",
+            type: "success"
+          })
+        } else {
+          wx.showToast({
+            title: "保存失败"
+          })
         }
-      })
+      }
+    })
   }
 })

@@ -9,8 +9,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "1.9.91",
-	"appid": "wx9c608a6237178170",
-	"projectname": "shell",
+	"appid": "wx0bf73ef0e73ca70b",
+	"projectname": "wx_shll",
 	"isGameTourist": false,
 	"condition": {
 		"search": {
