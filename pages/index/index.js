@@ -485,7 +485,7 @@ Page({
 
   // 进行支付
   clickPay() {
-
+    let that = this;
     wx.request({
       url: `${baseUrl}/sell/cart/list`,
       method: "POST",
@@ -498,13 +498,20 @@ Page({
             data: { "openId": this.data.openId },
             success: res => {
               wx.requestPayment({
-                'timeStamp': ""+JSON.parse(res.data.data).timeStamp,
+                'timeStamp': "" + JSON.parse(res.data.data).timeStamp,
                 'nonceStr': JSON.parse(res.data.data).nonceStr,
                 'package': JSON.parse(res.data.data).package,
                 'signType': JSON.parse(res.data.data).signType,
                 'paySign': JSON.parse(res.data.data).paySign,
                 'success': function (res) {
-                  console.log(res);
+                  let temporaryGoods = that.data.goods;
+                  temporaryGoods.map((item) => {
+                    item.number = 0
+                  });
+                  that.setData({
+                    goods: temporaryGoods,
+                    allGoodsNum:0
+                  });
                   wx.showToast({
                     title: '支付成功',
                     icon: 'success',
