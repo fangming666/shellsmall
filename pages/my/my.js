@@ -1,6 +1,7 @@
 // pages/my/my.js
 const app = getApp();
 const baseUrl = app.globalData.baseUrl;
+const imageUrl = app.globalData.imgUrl;
 Page({
 
   /**
@@ -9,9 +10,10 @@ Page({
   data: {
     userInfo: {},
     hasUserInfo: false,
-    myList: [{ "href": "/pages/order/order", "text": "订单", "img": "http://fm.xiaofany.com/shellSmall/dingDan.jpg" },
-    { "href": "/pages/key/key", "text": "key", "img": "http://fm.xiaofany.com/shellSmall/key.jpg" },
-    { "href": "/pages/news/news", "text": "消息列表", "img": "http://fm.xiaofany.com/shellSmall/xiaoXi.jpg" }]
+    rightIcon: `${imageUrl}/right.png`,
+    myList: [{ "href": "/pages/order/order", "text": "订单", "img": `${imageUrl}/dingDan.jpg` },
+    { "href": "/pages/key/key", "text": "key", "img": `${imageUrl}/key.jpg` },
+    { "href": "/pages/news/news", "text": "消息列表", "img": `${imageUrl}/xiaoXi.jpg` }]
   },
 
   /**

@@ -1,5 +1,6 @@
 //app.js
 const baseUrl = "https://dapeng12.mynatapp.cc"
+const imgUrl = "https://cloudvip.vip/sell_wx"
 App({
   onLaunch: function () {
 
@@ -70,6 +71,7 @@ App({
   globalData: {
     userInfo: null,
     openId: "",
-    baseUrl: baseUrl
+    baseUrl: baseUrl,
+    imgUrl: imgUrl
   }
 })

@@ -3,9 +3,15 @@
 const app = getApp();
 let buttonFlag = true;
 const baseUrl = app.globalData.baseUrl;
+const imageUrl = app.globalData.imgUrl;
 // 动画
 Page({
   data: {
+    addIcon: `${imageUrl}/add.png`,
+    reduceIcon: `${imageUrl}/reduce.png`,
+    cartIcon: `${imageUrl}/cart.png`,
+    clooseIcon: `${imageUrl}/cloose.png`,
+    BackgroundImg: `${imageUrl}/headBg.jpg`,
     marqueePace: 1,//滚动速度
     marqueeDistance2: 0, //初始滚动距离
     size: 14,
@@ -39,6 +45,7 @@ Page({
 
   },
   onLoad: function () {
+
     /*****获取公告信息***/
     wx.request({
       url: `${baseUrl}/sell/bulletin/info`,
@@ -508,9 +515,12 @@ Page({
                   temporaryGoods.map((item) => {
                     item.number = 0
                   });
+                  that.inquiryPrice();
+                  that.clearCart();
                   that.setData({
                     goods: temporaryGoods,
-                    allGoodsNum:0
+                    allGoodsNum: 0,
+
                   });
                   wx.showToast({
                     title: '支付成功',

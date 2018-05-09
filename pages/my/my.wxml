@@ -8,7 +8,7 @@
     <navigator wx:for="{{myList}}"  wx:key="key" class="my-content-item clearfix" url="{{item.href}}">
       <image class="pull-left" src="{{item.img}}"></image>
       <text class="pull-left">{{item.text}}</text>
-           <image class="arrow-right" src="http://fm.xiaofany.com/shellSmall/right.png"></image>
+           <image class="arrow-right" src="{{rightIcon}}"></image>
     </navigator>
   </view>
 </view>

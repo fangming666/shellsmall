@@ -2,7 +2,7 @@
 <view class="container">
   <!----顶部公告区域  -->
   <view class="head">
-    <view class="head-bg"></view>
+    <view class="head-bg"  style="background-image: url({{BackgroundImg}})"></view>
     <text class="head-title">{{headTitle}}</text>
     <view class="head-notice clearfix" bindtap='openAfficheOne'>
       <text class="head-notice-title pull-left">公告</text>
@@ -32,9 +32,9 @@
                 <text class="text-danger">￥{{item.originalPrice}}</text>
 
                 <view class="clearfix count">
-                    <image class="pull-left reduceBtn" src="http://fm.xiaofany.com/shellSmall/reduce.png" bindtap='reduceNum' data-index="{{item.id}}" hidden="{{item.number<=0}}"></image>
+                    <image class="pull-left reduceBtn" src="{{reduceIcon}}" bindtap='reduceNum' data-index="{{item.id}}" hidden="{{item.number<=0}}"></image>
                     <text class="pull-left" hidden="{{item.number<=0}}">{{item.number}}</text>
-                    <image class="pull-left addBtn" src="http://fm.xiaofany.com/shellSmall/add.png" bindtap='addNum' data-index="{{item.id}}" ></image>
+                    <image class="pull-left addBtn" src="{{addIcon}}" bindtap='addNum' data-index="{{item.id}}" ></image>
                 </view>
             </view>
         </view>
@@ -48,7 +48,7 @@
     <view class="pay-number" bindtap='toggleCard'>
         <view class="shopping-cart">
             <view class="shopping-item" >
-                <image src="http://fm.xiaofany.com/shellSmall/cart.png" ></image>
+                <image src="{{cartIcon}}" ></image>
                 <text class="cart-num" hidden="{{!allGoodsNum}}">{{allGoodsNum}}</text>
             </view>
         </view>
@@ -78,9 +78,9 @@
                 <text class="text-danger">￥{{item.originalPrice}}</text>
 
                 <view class="clearfix count">
-                    <image class="pull-left reduceBtn" src="http://fm.xiaofany.com/shellSmall/reduce.png" bindtap='reduceNum' data-index="{{item.id}}" hidden="{{item.number<=0}}"></image>
+                    <image class="pull-left reduceBtn" src="{{reduceIcon}}" bindtap='reduceNum' data-index="{{item.id}}" hidden="{{item.number<=0}}"></image>
                     <text class="pull-left" hidden="{{item.number<=0}}">{{item.number}}</text>
-                    <image class="pull-left addBtn" src="http://fm.xiaofany.com/shellSmall/add.png" bindtap='addNum' data-index="{{item.id}}" ></image>
+                    <image class="pull-left addBtn" src="{{addIcon}}" bindtap='addNum' data-index="{{item.id}}" ></image>
                 </view>
             </view>
         </view>
@@ -108,7 +108,7 @@
     </view>
 
     <view class="affiche-cloose">
-        <image src="http://fm.xiaofany.com/shellSmall/cloose.png" bindtap='clooseAffiche'></image>
+        <image src="{{clooseIcon}}" bindtap='clooseAffiche'></image>
     </view>
 </view>
 
