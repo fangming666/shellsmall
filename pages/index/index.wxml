@@ -2,7 +2,7 @@
 <view class="container">
   <!----顶部公告区域  -->
   <view class="head">
-    <view class="head-bg"  style="background-image: url({{BackgroundImg}})"></view>
+    <view class="head-bg"></view>
     <text class="head-title">{{headTitle}}</text>
     <view class="head-notice clearfix" bindtap='openAfficheOne'>
       <text class="head-notice-title pull-left">公告</text>

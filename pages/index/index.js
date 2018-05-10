@@ -11,7 +11,6 @@ Page({
     reduceIcon: `${imageUrl}/reduce.png`,
     cartIcon: `${imageUrl}/cart.png`,
     clooseIcon: `${imageUrl}/cloose.png`,
-    BackgroundImg: `${imageUrl}/headBg.jpg`,
     marqueePace: 1,//滚动速度
     marqueeDistance2: 0, //初始滚动距离
     size: 14,
@@ -45,7 +44,17 @@ Page({
 
   },
   onLoad: function () {
-
+    wx.setNavigationBarTitle({
+      title: '商品'
+    });
+    wx.setNavigationBarColor({
+      frontColor: 'black',
+      backgroundColor: '#888',
+      animation: {
+        duration: 400,
+        timingFunc: 'easeIn'
+      }
+    })
     /*****获取公告信息***/
     wx.request({
       url: `${baseUrl}/sell/bulletin/info`,
@@ -138,6 +147,7 @@ Page({
             method: "POST",
             data: { "openId": res.data },
             success: res => {
+          
               if (res.data.code === 0) {
                 let temporaryGoods = res.data.data;
                 temporaryGoods.map((item) => {

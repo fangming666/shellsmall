@@ -18,7 +18,7 @@ Page({
     let index = e.currentTarget.dataset.item;
     let arr = this.data.keyList;
     arr[index].email = e.detail.value;
-    console.log(e.detail.value);
+    arr[index].Edit = false;
     let reg = new RegExp(/^([a-zA-Z0-9._-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/);
     if (!reg.test(arr[index].email)) {
       arr[index].emailSwitch = true;
@@ -34,6 +34,7 @@ Page({
     let index = e.currentTarget.dataset.item;
     let arr = this.data.keyList;
     arr[index].appId = e.detail.value;
+    arr[index].Edit = false;
     this.setData({
       keyList: arr
     })
@@ -50,6 +51,9 @@ Page({
  * 生命周期函数--监听页面加载
  */
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: 'key'
+    })
     /********获取key列表*****/
     let that = this;
     wx.getStorage({
@@ -64,11 +68,17 @@ Page({
             method: "POST",
             data: { "openId": res.data },
             success: res => {
-              console.log(res.data);
               let arr = res.data.data;
               arr.map((item) => {
-                item.emailSwitch = false;
-                item.openSwitch = false
+                item.openSwitch = false;
+                item.Edit = false;
+                item.onceSwitch = true;
+                item.seretSwitch = true;
+                if (item.appId && item.email) {
+                  item.editFlag = 0;
+                  item.onceSwitch = false;
+                  item.seretSwitch = false
+                }
               });
               that.setData({
                 keyList: arr
@@ -94,35 +104,47 @@ Page({
 
   /****保存数据*****/
   saveData(e) {
-    wx.showLoading({
-      title: '保存中',
-    })
     let index = e.currentTarget.dataset.item;
     let arr = this.data.keyList;
-    wx.request({
-      url: `${baseUrl}/sell/key/save`,
-      method: "POST",
-      data: {
-        "openId": this.data.openId, "key": arr[index].key, "appId": arr[index].appId, "secret": arr[index].secret, "email": arr[index].email
-      },
-      success: res => {
-        console.log(res.data);
-        if (res.data.code == 0) {
-          arr[index].editFlag = 0;
-          this.setData({
-            keyList: arr
-          });
-          wx.hideLoading();
-          wx.showToast({
-            title: "保存成功",
-            type: "success"
-          })
-        } else {
-          wx.showToast({
-            title: "保存失败"
-          })
+    console.log(arr[index]);
+    if (!arr[index].appId || !arr[index].email) {
+      arr[index].Edit = true;
+      this.setData({
+        keyList: arr
+      });
+    } else {
+      wx.showLoading({
+        title: '保存中',
+      })
+
+      wx.request({
+        url: `${baseUrl}/sell/key/save`,
+        method: "POST",
+        data: {
+          "openId": this.data.openId, "key": arr[index].key, "appId": arr[index].appId, "secret": arr[index].secret, "email": arr[index].email
+        },
+        success: res => {
+          console.log(res.data);
+          if (res.data.code == 0) {
+            arr[index].editFlag = 0;
+            arr[index].onceSwitch = false;
+            arr[index].seretSwitch = false;
+            this.setData({
+              keyList: arr
+            });
+            wx.hideLoading();
+            wx.showToast({
+              title: "保存成功",
+              type: "success"
+            })
+          } else {
+            wx.showToast({
+              title: "保存失败"
+            })
+          }
         }
-      }
-    })
+      })
+    }
+
   }
 })

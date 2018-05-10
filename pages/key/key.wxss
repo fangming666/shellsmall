@@ -1,5 +1,5 @@
 .key {
-  padding: 0.7rem;
+   padding:0.3rem 0.7rem;
 }
 
 .key-title {
@@ -27,6 +27,7 @@
 .key-group>text {
   font-size: 14px;
   color: #db524b !important;
+  display: block
 }
 
 .key-group>view {

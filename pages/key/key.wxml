@@ -1,24 +1,25 @@
 <view class="key">
   <view class="key-title">{{keyTitle}}</view>
-  <view class="key-list" wx:for="{{keyList}}"  wx:key="key">
+  <view class="key-list" wx:for="{{keyList}}" wx:key="key">
     <view class="key-info" catchtap='openKeyList' data-item="{{index}}">
-    <text>key:{{item.key}}</text>
-    <text>token:{{item.token}}</text>
+      <text>key:{{item.key}}</text>
+      <text>token:{{item.token}}</text>
     </view>
-    <view class="key-group" wx:if="{{item.openSwitch}}" >
-      <text>只有一次编辑的机会，请仔细核对</text>
+    <view class="key-group" wx:if="{{item.openSwitch}}">
+      <text wx:if="{{item.onceSwitch}}">只有一次编辑的机会，请仔细核对</text>
       <view>微信appid
         <input value="{{item.appId}}" disabled='{{!item.editFlag}}' bindinput='getAppId' data-item="{{index}}" />
       </view>
-      <view>微信secret
+      <view wx:if="{{item.seretSwitch}}">微信secret
         <input value="{{item.secret}}" disabled='{{!item.editFlag}}' bindinput='getSecret' data-item="{{index}}" />
       </view>
       <view>登录邮箱
-        <input value="{{item.email}}" bindinput='verify' disabled="{{!item.editFlag}}" data-item="{{index}}"/>
+        <input value="{{item.email}}" bindinput='verify' disabled="{{!item.editFlag}}" data-item="{{index}}" />
         <view class="text-danger" wx:if="{{item.emailSwitch}}">请输入正确的电子邮箱地址</view>
+        <view class="text-danger" wx:if="{{item.Edit}}">微信appid和邮箱不能为空</view>
       </view>
       <view>
-        <button size="mini" type="primary" bindtap='saveData' disabled='{{item.emailSwitch||!item.editFlag}}' data-item="{{index}}">保存</button>
+        <button size="mini" type="primary" bindtap='saveData' disabled='{{item.emailSwitch}}' hidden='{{!item.editFlag}}' data-item="{{index}}">保存</button>
       </view>
     </view>
   </view>

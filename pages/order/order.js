@@ -9,13 +9,24 @@ Page({
   data: {
     orderTitle: "订单列表",
     openId: "",
-    arr:[]
+    arr: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: '订单'
+    });
+    wx.setNavigationBarColor({
+      frontColor: '#ffffff',
+      backgroundColor: '#888',
+      animation: {
+        duration: 400,
+        timingFunc: 'easeIn'
+      }
+    })
     /********获取订单列表*****/
     let that = this;
     wx.getStorage({
@@ -24,23 +35,27 @@ Page({
         that.setData({
           openId: res.data
         });
-        console.log(res.data)
-        if(res.data){
+        if (res.data) {
           wx.request({
             url: `${baseUrl}/sell/order/payList`,
             method: "POST",
             data: { "openId": res.data },
             success: res => {
+              let nowDate = Date.parse(new Date());
+              console.log(nowDate);
               if (res.data.code === 0) {
                 console.log(res.data);
+                res.data.data.map(item => {
+                  item.timeStamp
+                })
                 that.setData({
-                  arr:res.data.data
+                  arr: res.data.data
                 })
               }
             }
           });
         }
-       
+
 
 
       },

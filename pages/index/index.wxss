@@ -123,6 +123,7 @@
   -ms-filter: blur(5px);
   filter: blur(5px);
   z-index: -1;
+  background-color: black
 }
 
 .head-title {

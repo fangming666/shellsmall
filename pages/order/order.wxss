@@ -1,11 +1,15 @@
 /* pages/order/order.wxss */
 
 .order-warp {
-  padding: 0.7rem;
+  padding: 0.3rem 0.7rem;
+  background: #e6e6e6;
 }
 
-.order-warp>view {
+.order-warp>view:not(.order-head) {
   margin: 0.5rem;
+  padding: 0.35rem;
+  background: #fff;
+  border-radius: 4px;
 }
 
 .order-head {
@@ -14,25 +18,34 @@
 
 .order-time {
   font-size: 0.9rem;
+  margin-bottom: 0.2rem;
+  color:#996666
 }
 
 .order-money {
   font-size: 14px;
   color: #9b9b9b;
-  margin-bottom: .6rem;
+  margin-bottom: 0.6rem;
 }
 
 .order-list {
   font-size: 14px;
   color: #9b9b9b;
-  padding: 0.5rem;
-  border-bottom: 1px solid lightgray;
-  margin-top: 0
+  padding: 0.35rem;
+  /* border-bottom: 1px solid lightgray; */
+  margin-top: 0;
 }
 
 .order-list>text {
   margin-right: 4rem;
 }
-.order-buy-num{
-  margin-bottom: .4rem
+
+.order-buy-num {
+  margin-bottom: 0.4rem;
+  color:#333366
+}
+@media all and (max-width:374px){
+  .order-money>text:nth-child(1){
+    display: block
+  }
 }
