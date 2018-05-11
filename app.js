@@ -1,7 +1,8 @@
 //app.js
-const baseUrl = "https://dapeng12.mynatapp.cc"
-// const baseUrl = "https://cloudvip.vip"
+// const baseUrl = "https://dapeng12.mynatapp.cc"
+const baseUrl = "https://cloudvip.vip"
 const imgUrl = "https://cloudvip.vip/sell_wx"
+const Promise = require("./pages/promise.js")
 App({
   onLaunch: function () {
 

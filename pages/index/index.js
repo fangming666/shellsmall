@@ -4,20 +4,15 @@ const app = getApp();
 let buttonFlag = true;
 const baseUrl = app.globalData.baseUrl;
 const imageUrl = app.globalData.imgUrl;
-// 动画
+const openIdPromise = require("./../openId.js").openId;
+const dataJson = require("./../module.js");
+
 Page({
   data: {
     addIcon: `${imageUrl}/add.png`,
     reduceIcon: `${imageUrl}/reduce.png`,
     cartIcon: `${imageUrl}/cart.png`,
     clooseIcon: `${imageUrl}/cloose.png`,
-    marqueePace: 1,//滚动速度
-    marqueeDistance2: 0, //初始滚动距离
-    size: 14,
-    marquee2copy_status: false,
-    marquee2_margin: 60,
-    orientation: 'left',//滚动方向
-    interval: 20, // 时间间隔
     allRate: 0,
     allGoodsNum: 0,
     headNotice: "优惠信息",
@@ -39,19 +34,16 @@ Page({
     btnDisabled: false
 
   },
-  onShow: function () {
-
-
-  },
   onLoad: function () {
+    let that = this;
+    /***设置头部区域***/
     wx.setNavigationBarTitle({
-      title: '商品'
+      title: '首页'
     });
     wx.setNavigationBarColor({
-      frontColor: 'black',
-      backgroundColor: '#888',
+      frontColor: '#ffffff',
+      backgroundColor: '#343234',
       animation: {
-        duration: 400,
         timingFunc: 'easeIn'
       }
     })
@@ -64,123 +56,73 @@ Page({
           this.setData({
             headNotice: res.data.data.bulletin
           });
-          var vm = this;
-          var length = vm.data.headNotice.length * vm.data.size;//文字长度
-          var windowWidth = wx.getSystemInfoSync().windowWidth;// 屏幕宽度
-          vm.setData({
-            length: length,
-            windowWidth: windowWidth,
-          });
-          vm.run2();// 第一个字消失后立即从右边出现
         }
       }
     })
+    openIdPromise.then((res) => {
+      that.setData({
+        openId: res
+      })
+      /***获取购物车总数量***/
+      dataJson.allGoodsNum(res).then(res => {
+        that.setData({
+          allGoodsNum: res
+        })
+      })
 
-    this.getGoods();
+      /**获取商品列表**/
+      dataJson.getGoods(res).then(res => {
+        let temporaryGoods = res;
+        if (!this.data.allGoodsNum) {
+          temporaryGoods.map((item) => {
+            item.number = 0
+          });
+          that.setData({
+            goods: temporaryGoods
+          });
+        } else {
+          dataJson.cartGoods(that.data.openId).then(res => {
+            temporaryGoods.map((item) => {
+              res.map((item2) => {
+                if (item.id === item2.productId) {
+                  item.number = item2.number
+                } else {
+                  item.number = 0
+                }
+              })
+            });
+            that.setData({
+              goods: temporaryGoods
+            });
+          })
+        }
+  
+        
+      })
 
-
+      /*****获得购物车内的价格*****/
+      dataJson.allRate(res).then(res => {
+        that.setData({
+          allRate: res
+        })
+      })
+    });
   },
   /*****下拉刷新****/
   onPullDownRefresh: function () {
     wx.showNavigationBarLoading() //在标题栏中显示加载
     let that = this;
-    wx.getStorage({
-      key: 'openID',
-      success: function (res) {
-        that.setData({
-          openId: res.data
-        });
-        if (res.data) {
-          wx.request({
-            url: `${baseUrl}/sell/product/list`,
-            method: "POST",
-            data: { "openId": res.data },
-            success: res => {
-              if (res.data.code === 0) {
-                wx.hideNavigationBarLoading() //完成停止加载
-                wx.stopPullDownRefresh() //停止下拉刷新
-                that.clearCart();
-                let temporaryGoods = res.data.data;
-                temporaryGoods.map((item) => {
-                  item.number = 0
-                });
-                that.setData({
-                  goods: temporaryGoods
-                });
-              }
-            }
-          });
-          /**获取购物车的总价格****/
-          that.inquiryPrice();
-        }
-
-        wx.showToast({
-          title: '刷新完成',
-          icon: 'none',
-          duration: 1000
-        })
-
-      },
-      fail: () => {
-        wx.showToast({
-          title: '刷新失败',
-          icon: 'none',
-          duration: 1000
-        })
-      }
+    /**获取商品列表**/
+    dataJson.getGoods(this.data.openId).then(res => {
+      that.setData({
+        goods: res
+      });
+      wx.hideNavigationBarLoading() //完成停止加载
+      wx.stopPullDownRefresh() //停止下拉刷新
     })
 
   },
 
-  /**获取商品列表****/
-  getGoods() {
-    let that = this;
-    wx.getStorage({
-      key: 'openID',
-      success: function (res) {
-        that.setData({
-          openId: res.data
-        });
-        if (res.data) {
-          wx.request({
-            url: `${baseUrl}/sell/product/list`,
-            method: "POST",
-            data: { "openId": res.data },
-            success: res => {
-          
-              if (res.data.code === 0) {
-                let temporaryGoods = res.data.data;
-                temporaryGoods.map((item) => {
-                  item.number = 0
-                });
-                that.setData({
-                  goods: temporaryGoods
-                });
-              }
-            }
-          });
-          /**获取购物车的总价格****/
-          that.inquiryPrice();
-          /**获得购物车的总数量**/
-          wx.request({
-            url: `${baseUrl}/sell/cart/list`,
-            method: "POST",
-            data: { "openId": res.data },
-            success: res => {
-              if (res.data.data.length) {
-                that.setData({
-                  allGoodsNum: res.data.data.length
-                })
-              } else {
-              }
-            }
-          })
-        }
-
-
-      },
-    })
-  },
 
 
   /*****显示购物车******/
@@ -192,26 +134,19 @@ Page({
     if (this.data.cardSwitch) {
       this.cascadePopup();
       let that = this;
-      /*****获取购物车列表****/
-      wx.request({
-        url: `${baseUrl}/sell/cart/list`,
-        method: "POST",
-        data: { "openId": that.data.openId },
-        success: res => {
-          let arr = []
-          that.data.goods.map((item) => {
-            res.data.data.map((items) => {
-              if (item.id == items.productId) {
-                item.number = items.number;
-                arr.push(item);
-              }
-            })
-          });
-          // arr = that.data.allGoodsNum <= 0 ? [] : arr;
-          that.setData({
-            cartGoods: arr
+      dataJson.cartGoods(that.data.openId).then(res => {
+        let arr = []
+        that.data.goods.map((item) => {
+          res.map((items) => {
+            if (item.id == items.productId) {
+              item.number = items.number;
+              arr.push(item);
+            }
           })
-        }
+        });
+        that.setData({
+          cartGoods: arr
+        })
       })
     } else {
       this.cascadeDismiss()
@@ -237,7 +172,6 @@ Page({
       animationData: this.animation.export(),
     });
   },
-
   cascadeDismiss: function () {        // 购物车关闭动画
     this.animation.opacity(0).step();
     this.setData({
@@ -245,33 +179,7 @@ Page({
     });
   },
 
-  /*******公告栏的跑马灯效果********/
-  run2: function () {
-    var vm = this;
-    var interval = setInterval(function () {
-      if (-vm.data.marqueeDistance2 < vm.data.length) {
-        // 如果文字滚动到出现marquee2_margin=30px的白边，就接着显示
-        vm.setData({
-          marqueeDistance2: vm.data.marqueeDistance2 - vm.data.marqueePace,
-          marquee2copy_status: vm.data.length + vm.data.marqueeDistance2 <= vm.data.windowWidth + vm.data.marquee2_margin,
-        });
-      } else {
-        if (-vm.data.marqueeDistance2 >= vm.data.marquee2_margin) { // 当第二条文字滚动到最左边时
-          vm.setData({
-            marqueeDistance2: vm.data.marquee2_margin // 直接重新滚动
-          });
-          clearInterval(interval);
-          vm.run2();
-        } else {
-          clearInterval(interval);
-          vm.setData({
-            marqueeDistance2: -vm.data.windowWidth
-          });
-          vm.run2();
-        }
-      }
-    }, vm.data.interval);
-  },
+
 
   /****减少商品数量的方法****/
   reduceNum(e) {
@@ -324,7 +232,11 @@ Page({
       success: res => {
         if (res.data.code === 0) {
           buttonFlag = true;
-          this.inquiryPrice();
+          dataJson.allRate(this.data.openId).then(res => {
+            this.setData({
+              allRate: res
+            })
+          })
           wx.hideLoading();
           this.setData({
             goods: resultArr,
@@ -334,6 +246,7 @@ Page({
       }
     })
   },
+
   /*******增加商品数量的方法*********/
   addNum(e) {
     wx.showLoading({
@@ -390,7 +303,11 @@ Page({
       success: res => {
         if (res.data.code === 0) {
           buttonFlag = true;
-          this.inquiryPrice();
+          dataJson.allRate(this.data.openId).then(res => {
+            this.setData({
+              allRate: res
+            })
+          })
         }
         else {
           console.log(res.data);
@@ -402,22 +319,7 @@ Page({
     })
   },
 
-  /********/
 
-  /****查询购物车的价格***/
-  inquiryPrice() {
-    wx.request({
-      url: `${baseUrl}/sell/cart/totalPrice`,
-      method: "POST",
-      data: { "openId": this.data.openId },
-      success: res => {
-        this.setData({
-          allRate: res.data.data.totalPrice
-        })
-      },
-    })
-
-  },
 
 
   /*******清空购物车*****/
@@ -525,7 +427,11 @@ Page({
                   temporaryGoods.map((item) => {
                     item.number = 0
                   });
-                  that.inquiryPrice();
+                  dataJson.allRate(that.data.openId).then(res => {
+                    that.setData({
+                      allRate: res
+                    })
+                  })
                   that.clearCart();
                   that.setData({
                     goods: temporaryGoods,
@@ -540,6 +446,11 @@ Page({
                 },
                 'fail': function (res) {
                   console.log(res);
+                  dataJson.allRate(that.data.openId).then(res => {
+                    that.setData({
+                      allRate: res
+                    })
+                  })
                   wx.showToast({
                     title: '支付失败',
                     icon: 'none',

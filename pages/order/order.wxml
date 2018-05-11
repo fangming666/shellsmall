@@ -1,7 +1,10 @@
 <!--pages/order/order.wxml-->
-<view class="order-warp">
+<view class="order-warp {{orderKong?'order-Kong':''}}" >
   <view class="order-head">{{orderTitle}}</view>
-  <view wx:for="{{arr}}" wx:key="key">
+   <view wx:if="{{orderKong}}">
+    <image src="{{KongSrc}}"></image>
+  </view> 
+  <view  wx:for="{{arr}}" wx:key="key">
     <view class="order-time">时间：{{item.timeStamp}}</view>
     <view class="order-buy-num">购买数量:{{item.keys.length}}</view>
     <view class="order-money">
@@ -12,5 +15,6 @@
       <text>key:{{keyItems}}</text>
     </view>
   </view>
+
 
 </view>

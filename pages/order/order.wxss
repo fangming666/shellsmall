@@ -5,6 +5,10 @@
   background: #e6e6e6;
 }
 
+.order-Kong {
+  background-color: white;
+}
+
 .order-warp>view:not(.order-head) {
   margin: 0.5rem;
   padding: 0.35rem;
@@ -19,7 +23,7 @@
 .order-time {
   font-size: 0.9rem;
   margin-bottom: 0.2rem;
-  color:#996666
+  color: #966;
 }
 
 .order-money {
@@ -42,10 +46,11 @@
 
 .order-buy-num {
   margin-bottom: 0.4rem;
-  color:#333366
+  color: #336;
 }
-@media all and (max-width:374px){
-  .order-money>text:nth-child(1){
-    display: block
+
+@media all and (max-width:374px) {
+  .order-money>text:nth-child(1) {
+    display: block;
   }
 }

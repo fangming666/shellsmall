@@ -70,15 +70,12 @@
   color: lightgray;
 }
 
-.marquee_box {
+.example>text {
   width: 100%;
-  position: relative;
-}
-
-.marquee_text {
+  overflow: hidden;
   white-space: nowrap;
-  position: absolute;
-  top: 6px;
+  text-overflow: ellipsis;
+  font-size: 14px
 }
 
 .shopping-item>image {
@@ -117,13 +114,8 @@
   background-repeat: no-repeat;
   background-size: 100% 100%;
   position: absolute;
-  -webkit-filter: blur(5px);
-  -moz-filter: blur(5px);
-  -o-filter: blur(5px);
-  -ms-filter: blur(5px);
-  filter: blur(5px);
   z-index: -1;
-  background-color: black
+  background-color: black;
 }
 
 .head-title {
@@ -313,7 +305,7 @@
 }
 
 .addBtn {
-  width:40rpx;
+  width: 40rpx;
   height: 40rpx;
 }
 

@@ -7,110 +7,105 @@
     <view class="head-notice clearfix" bindtap='openAfficheOne'>
       <text class="head-notice-title pull-left">公告</text>
       <view class="example pull-left">
-        <view class="marquee_box">
-          <view class="marquee_text" style="{{orientation}}:{{marqueeDistance2}}px;font-size: {{size}}px;">
-            <text>{{headNotice}}</text>
-              <text hidden="{{!marquee2copy_status}}" style="margin-left:{{marquee2_margin}}px;">{{headNotice}}</text>
-          </view>
-        </view>
+        <text>{{headNotice}}</text>
       </view>
     </view>
   </view>
 
   <!--中间商品区域  -->
- <scroll-view class="goods-warp" scroll-y>
+  <scroll-view class="goods-warp" scroll-y>
     <view class="goods clearfix" wx:for="{{goods}}" wx:key="key">
-         <image src="{{item.imageUrl}}" class="goods-img pull-left" catchtap='openAfficheTwo' data-item="{{index}}"></image> 
-        <view class="goods-item pull-left">
-            <text class="goods-title" catchtap='openAfficheTwo' data-item="{{index}}">{{item.name}}</text>
-            <view class="text-muted clearfix">
-                <text class="pull-left m-r-2">已售{{item.sold}}</text>
-                <text class="pull-left m-r-2">库存{{item.stock}}</text>
-            </view>
-             <view class="text-muted">原价{{item.originalPrice}}</view>
-            <view class="goods-now clearfix">
-                <text class="text-danger">￥{{item.originalPrice}}</text>
-
-                <view class="clearfix count">
-                    <image class="pull-left reduceBtn" src="{{reduceIcon}}" bindtap='reduceNum' data-index="{{item.id}}" hidden="{{item.number<=0}}"></image>
-                    <text class="pull-left" hidden="{{item.number<=0}}">{{item.number}}</text>
-                    <image class="pull-left addBtn" src="{{addIcon}}" bindtap='addNum' data-index="{{item.id}}" ></image>
-                </view>
-            </view>
+      <image src="{{item.imageUrl}}" class="goods-img pull-left" catchtap='openAfficheTwo' data-item="{{index}}"></image>
+      <view class="goods-item pull-left">
+        <text class="goods-title" catchtap='openAfficheTwo' data-item="{{index}}">{{item.name}}</text>
+        <view class="text-muted clearfix">
+          <text class="pull-left m-r-2">已售{{item.sold}}</text>
+          <text class="pull-left m-r-2">库存{{item.stock}}</text>
         </view>
+        <view class="text-muted">原价{{item.originalPrice}}</view>
+        <view class="goods-now clearfix">
+          <text class="text-danger">￥{{item.originalPrice}}</text>
+
+          <view class="clearfix count">
+            <image class="pull-left reduceBtn" src="{{reduceIcon}}" bindtap='reduceNum' data-index="{{item.id}}" hidden="{{item.number<=0}}"></image>
+            <text class="pull-left" hidden="{{item.number<=0}}">{{item.number}}</text>
+            <image class="pull-left addBtn" src="{{addIcon}}" bindtap='addNum' data-index="{{item.id}}"></image>
+          </view>
+        </view>
+      </view>
     </view>
-</scroll-view>
+  </scroll-view>
 
 
 
-<!--底部区域  -->
-<view class="pay-box">
+  <!--底部区域  -->
+  <view class="pay-box">
     <view class="pay-number" bindtap='toggleCard'>
-        <view class="shopping-cart">
-            <view class="shopping-item" >
-                <image src="{{cartIcon}}" ></image>
-                <text class="cart-num" hidden="{{!allGoodsNum}}">{{allGoodsNum}}</text>
-            </view>
+      <view class="shopping-cart">
+        <view class="shopping-item">
+          <image src="{{cartIcon}}"></image>
+          <text class="cart-num" hidden="{{!allGoodsNum}}">{{allGoodsNum}}</text>
         </view>
-        <text>{{allRate}}</text>
+      </view>
+      <text wx:if="{{allRate}}">￥{{allRate}}</text>
     </view>
     <view class="pay-btn" bindtap='clickPay'>支付</view>
-</view>
+  </view>
 
-<!----购物车  -->
-<view  animation="{{animationData}}" class="shopping-trolley"  hidden="{{!cardSwitch}}">
+  <!----购物车  -->
+  <view animation="{{animationData}}" class="shopping-trolley" hidden="{{!cardSwitch}}">
     <view class="clooseCard" bindtap='closeCard'>
     </view>
     <view class="shopping-trolley-title">购物车
-        <text class="text-primary pull-right" bindtap='clearCart'>清空</text>
+      <text class="text-primary pull-right" bindtap='clearCart'>清空</text>
     </view>
     <scroll-view class="goods-warp" scroll-y>
-    <view class="goods clearfix" wx:for="{{cartGoods}}" wx:key="key">
-         <image src="{{item.imageUrl}}" class="goods-img pull-left" catchtap='openAfficheTwo' data-item="{{index}}"></image> 
+      <view class="goods clearfix" wx:for="{{cartGoods}}" wx:key="key">
+        <image src="{{item.imageUrl}}" class="goods-img pull-left" catchtap='openAfficheTwo' data-item="{{index}}"></image>
         <view class="goods-item pull-left">
-            <text class="goods-title" catchtap='openAfficheTwo' data-item="{{index}}">{{item.name}}</text>
-            <view class="text-muted clearfix">
-                <text class="pull-left m-r-2">已售{{item.sold}}</text>
-                <text class="pull-left m-r-2">库存{{item.stock}}</text>
-            </view>
-             <view class="text-muted">原价{{item.originalPrice}}</view>
-            <view class="goods-now clearfix">
-                <text class="text-danger">￥{{item.originalPrice}}</text>
+          <text class="goods-title" catchtap='openAfficheTwo' data-item="{{index}}">{{item.name}}</text>
+          <view class="text-muted clearfix">
+            <text class="pull-left m-r-2">已售{{item.sold}}</text>
+            <text class="pull-left m-r-2">库存{{item.stock}}</text>
+          </view>
+          <view class="text-muted">原价{{item.originalPrice}}</view>
+          <view class="goods-now clearfix">
+            <text class="text-danger">￥{{item.originalPrice}}</text>
 
-                <view class="clearfix count">
-                    <image class="pull-left reduceBtn" src="{{reduceIcon}}" bindtap='reduceNum' data-index="{{item.id}}" hidden="{{item.number<=0}}"></image>
-                    <text class="pull-left" hidden="{{item.number<=0}}">{{item.number}}</text>
-                    <image class="pull-left addBtn" src="{{addIcon}}" bindtap='addNum' data-index="{{item.id}}" ></image>
-                </view>
+            <view class="clearfix count">
+              <image class="pull-left reduceBtn" src="{{reduceIcon}}" bindtap='reduceNum' data-index="{{item.id}}" hidden="{{item.number<=0}}"></image>
+              <text class="pull-left" hidden="{{item.number<=0}}">{{item.number}}</text>
+              <image class="pull-left addBtn" src="{{addIcon}}" bindtap='addNum' data-index="{{item.id}}"></image>
             </view>
+          </view>
         </view>
-    </view>
-</scroll-view>
-</view>
+      </view>
+    </scroll-view>
+  </view>
 
 
 
-<!-----公告栏  ----->
-<view class="affiche-box" hidden="{{!afficheSwicth}}" animation="{{animationAffiche}}">
+  <!-----公告栏  ----->
+  <view class="affiche-box" hidden="{{!afficheSwicth}}" animation="{{animationAffiche}}">
     <view class="affiche-content" hidden="{{!afficheSwicthTwo}}">
-        <text class="affiche-title">{{afficheTitle}}</text>
-        <text class="affiche-sold text-left">已售：{{afficheSold}}</text>
-                        <text class="affiche-sold text-left">库存：{{stock}}</text>
+      <text class="affiche-title">{{afficheTitle}}</text>
+      <text class="affiche-sold text-left">已售：{{afficheSold}}</text>
+      <text class="affiche-sold text-left">库存：{{stock}}</text>
 
-        <view class="affiche-cut">优惠</view>
-        <text class="affiche-init text-left">原价：{{afficheInit}}</text>
-        <text class="affiche-now text-left">现价：{{afficheNow}}</text>
-        <text class="affiche-prefer text-left">{{affichePrefer}}</text>
+      <view class="affiche-cut">优惠</view>
+      <text class="affiche-init text-left">原价：{{afficheInit}}</text>
+      <text class="affiche-now text-left">现价：{{afficheNow}}</text>
+      <text class="affiche-prefer text-left">{{affichePrefer}}</text>
     </view>
     <view class="affiche-content" hidden="{{!afficheSwicthOne}}">
-        <view class="affiche-cut">公告</view>
-        <text class="affiche-info text-left">{{headNotice}}</text>
+      <view class="affiche-cut">公告</view>
+      <text class="affiche-info text-left">{{headNotice}}</text>
     </view>
 
     <view class="affiche-cloose">
-        <image src="{{clooseIcon}}" bindtap='clooseAffiche'></image>
+      <image src="{{clooseIcon}}" bindtap='clooseAffiche'></image>
     </view>
-</view>
+  </view>
 
 
 </view>

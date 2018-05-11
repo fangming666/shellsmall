@@ -1,6 +1,9 @@
 // pages/order/order.js
 const app = getApp();
 const baseUrl = app.globalData.baseUrl;
+const openIdPromise = require("/../openId.js").openId;
+const dataJson = require("./../module.js");
+const imageUrl = app.globalData.imgUrl;
 Page({
 
   /**
@@ -9,7 +12,9 @@ Page({
   data: {
     orderTitle: "订单列表",
     openId: "",
-    arr: []
+    arr: [],
+    orderKong: false,
+    KongSrc: "./../../img/Kong.png" //`${imageUrl}/Kong.png`
   },
 
   /**
@@ -29,85 +34,27 @@ Page({
     })
     /********获取订单列表*****/
     let that = this;
-    wx.getStorage({
-      key: 'openID',
-      success: function (res) {
-        that.setData({
-          openId: res.data
-        });
-        if (res.data) {
-          wx.request({
-            url: `${baseUrl}/sell/order/payList`,
-            method: "POST",
-            data: { "openId": res.data },
-            success: res => {
-              let nowDate = Date.parse(new Date());
-              console.log(nowDate);
-              if (res.data.code === 0) {
-                console.log(res.data);
-                res.data.data.map(item => {
-                  item.timeStamp
-                })
-                that.setData({
-                  arr: res.data.data
-                })
-              }
-            }
-          });
+    openIdPromise.then(res => {
+      dataJson.orderList(res).then(res => {
+        let nowDate = Date.parse(new Date());
+        if (res.code === 0) {
+          res.data.map(item => {
+            item.timeStamp
+          })
+          that.setData({
+            arr: res.data
+          })
+        } else {
+          that.setData({
+            orderKong: true
+          })
         }
-
-
-
-      },
+      })
     })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
 
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
+ 
 
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
+ 
 })
