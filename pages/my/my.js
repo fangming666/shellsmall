@@ -10,6 +10,8 @@ Page({
   data: {
     userInfo: {},
     hasUserInfo: false,
+    // loginImg: `${imageUrl}/right.png`,
+    loginImg: `./../../img/login.jpg`,
     rightIcon: `${imageUrl}/right.png`,
     myList: [{ "href": "/pages/order/order", "text": "订单", "img": `${imageUrl}/dingDan.jpg` },
     { "href": "/pages/key/key", "text": "key", "img": `${imageUrl}/key.jpg` },
@@ -23,19 +25,32 @@ Page({
     wx.setNavigationBarTitle({
       title: '我的'
     })
+
+
+
+  },
+  openAlert() {
+    wx.showModal({
+      title: '提示',
+      content: '请先进行登录',
+      showCancel: false
+    })
+  },
+  login() {
+    let that = this;
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
       })
-    } else if (this.data.canIUse) {
+    } else if (that.data.canIUse) {
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
         if (!res.userInfo.avatarUrl) {
           res.userInfo.avatarUrl = "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3289761550,697278018&fm=27&gp=0.jpg"
         }
-        this.setData({
+        that.setData({
           userInfo: res.userInfo,
           hasUserInfo: true
         })
@@ -48,19 +63,13 @@ Page({
             res.userInfo.avatarUrl = "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3289761550,697278018&fm=27&gp=0.jpg"
           }
           app.globalData.userInfo = res.userInfo;
-          this.setData({
+          that.setData({
             userInfo: res.userInfo,
             hasUserInfo: true
           })
         }
       })
     };
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
+    console.log(this.data.userInfo)
+  }
 })

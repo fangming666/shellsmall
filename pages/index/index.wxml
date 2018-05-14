@@ -1,10 +1,10 @@
 <!--index.wxml-->
-<view class="container">
+<view class="container {{cardSwitch?'noscroll':''}}">
   <!----顶部公告区域  -->
-  <view class="head">
+  <view class="head" bindtap='openAfficheOne'>
     <view class="head-bg"></view>
     <text class="head-title">{{headTitle}}</text>
-    <view class="head-notice clearfix" bindtap='openAfficheOne'>
+    <view class="head-notice clearfix">
       <text class="head-notice-title pull-left">公告</text>
       <view class="example pull-left">
         <text>{{headNotice}}</text>
@@ -44,7 +44,7 @@
       <view class="shopping-cart">
         <view class="shopping-item">
           <image src="{{cartIcon}}"></image>
-          <text class="cart-num" hidden="{{!allGoodsNum}}">{{allGoodsNum}}</text>
+          <text class="cart-num" wx:if="{{allGoodsNum != 0}}">{{allGoodsNum}}</text>
         </view>
       </view>
       <text wx:if="{{allRate}}">￥{{allRate}}</text>
@@ -53,7 +53,7 @@
   </view>
 
   <!----购物车  -->
-  <view animation="{{animationData}}" class="shopping-trolley" hidden="{{!cardSwitch}}">
+  <view animation="{{animationData}}" class="shopping-trolley " hidden="{{!cardSwitch}}" catchtouchmove="preventD">
     <view class="clooseCard" bindtap='closeCard'>
     </view>
     <view class="shopping-trolley-title">购物车
@@ -61,21 +61,17 @@
     </view>
     <scroll-view class="goods-warp" scroll-y>
       <view class="goods clearfix" wx:for="{{cartGoods}}" wx:key="key">
-        <image src="{{item.imageUrl}}" class="goods-img pull-left" catchtap='openAfficheTwo' data-item="{{index}}"></image>
-        <view class="goods-item pull-left">
-          <text class="goods-title" catchtap='openAfficheTwo' data-item="{{index}}">{{item.name}}</text>
-          <view class="text-muted clearfix">
-            <text class="pull-left m-r-2">已售{{item.sold}}</text>
-            <text class="pull-left m-r-2">库存{{item.stock}}</text>
+        <view class="goods-item clearfix">
+          <view class="pull-left">
+            <text class="goods-title" data-item="{{index}}">{{item.name}}</text>
+            <view class="goods-preferential">{{item.preferential}}</view>
           </view>
-          <view class="text-muted">原价{{item.originalPrice}}</view>
-          <view class="goods-now clearfix">
+          <view class="goods-now clearfix pull-right">
             <text class="text-danger">￥{{item.originalPrice}}</text>
-
             <view class="clearfix count">
               <image class="pull-left reduceBtn" src="{{reduceIcon}}" bindtap='reduceNum' data-index="{{item.id}}" hidden="{{item.number<=0}}"></image>
-              <text class="pull-left" hidden="{{item.number<=0}}">{{item.number}}</text>
-              <image class="pull-left addBtn" src="{{addIcon}}" bindtap='addNum' data-index="{{item.id}}"></image>
+              <view  class="pull-left" hidden="{{item.number<=0}}">{{item.number}}</view>
+              <image class="pull-right addBtn" src="{{addIcon}}" bindtap='addNum' data-index="{{item.id}}"></image>
             </view>
           </view>
         </view>
@@ -86,7 +82,7 @@
 
 
   <!-----公告栏  ----->
-  <view class="affiche-box" hidden="{{!afficheSwicth}}" animation="{{animationAffiche}}">
+  <view class="affiche-box" hidden="{{!afficheSwicth}}" animation="{{animationAffiche}}" bindtap='clooseAffiche'>
     <view class="affiche-content" hidden="{{!afficheSwicthTwo}}">
       <text class="affiche-title">{{afficheTitle}}</text>
       <text class="affiche-sold text-left">已售：{{afficheSold}}</text>
@@ -103,7 +99,7 @@
     </view>
 
     <view class="affiche-cloose">
-      <image src="{{clooseIcon}}" bindtap='clooseAffiche'></image>
+      <image src="{{clooseIcon}}"></image>
     </view>
   </view>
 

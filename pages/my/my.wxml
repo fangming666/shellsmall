@@ -1,14 +1,28 @@
 <!--pages/my/my.wxml-->
 <view class="my">
   <view class="my-head clearfix">
-    <image class="pull-left m-r-2" src="{{userInfo.avatarUrl}}"></image>
-    <text class="pull-left text-primary">{{userInfo.nickName}}</text>
+
+    <view class="my-head-item" wx:if="{{!userInfo.avatarUrl}}">
+      <image class="pull-left m-r-2" src="{{loginImg}}"></image>
+      <text class="pull-left text-primary">点击进行登录</text>
+      <button open-type='getUserInfo' catchtap='login'></button>
+    </view>
+    <view class="my-head-item" wx:else>
+      <image class="pull-left m-r-2" src="{{userInfo.avatarUrl}}"></image>
+      <text class="pull-left text-primary">{{userInfo.nickName}}</text>
+    </view>
   </view>
+
   <view class="my-content">
-    <navigator wx:for="{{myList}}"  wx:key="key" class="my-content-item clearfix" url="{{item.href}}">
+    <navigator wx:for="{{myList}}" wx:key="key" class="my-content-item clearfix" url="{{item.href}}">
       <image class="pull-left" src="{{item.img}}"></image>
       <text class="pull-left">{{item.text}}</text>
-           <image class="arrow-right" src="{{rightIcon}}"></image>
+      <image class="arrow-right" src="{{rightIcon}}"></image>
     </navigator>
   </view>
+  <view class="openAlert" wx:if="{{!userInfo.avatarUrl}}" bindtap='openAlert'>
+
+  </view>
+
+
 </view>

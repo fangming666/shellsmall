@@ -1,30 +1,40 @@
-.my-head {
-  padding: 30rpx;
+.my {
+  background-color: #f4f4f4;
+  min-height: 100vh;
+  position: relative;
 }
 
-.my-head>image {
+.my-head {
+  padding: 30rpx;
+  margin-bottom: 1rem;
+  background-color: white;
+}
+
+.my-head-item>image {
   width: 150rpx;
   height: 150rpx;
   border-radius: 50%;
 }
 
-.my-head>text {
+.my-head-item>text {
   height: 150rpx;
   line-height: 150rpx;
   display: inline-block;
 }
 
 .my-content >navigator {
-  height: 160rpx;
-  padding: 20rpx;
+  height: 120rpx;
+  padding: 0 20rpx;
   box-sizing: border-box;
-  line-height: 160rpx;
+  line-height: 120rpx;
   position: relative;
+  background: white;
 }
 
 .my-content>navigator>image:not(.arrow-right) {
-  width: 120rpx;
-  height: 120rpx;
+  width: 100rpx;
+  height: 100rpx;
+  margin-top: 10rpx;
 }
 
 .my-content>navigator>text {
@@ -40,10 +50,39 @@
   border-bottom: 1px solid lightgray;
 }
 
+.my-content>navigator:last-child>text {
+  border: none;
+}
+
 .arrow-right {
-  width: 80rpx;
-  height: 80rpx;
+  width: 40rpx;
+  height: 40rpx;
   position: absolute;
   right: 2rem;
   top: 1rem;
+}
+
+.my-head-item button {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.my-head-item {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.openAlert {
+  position: absolute;
+  background-color: transparent;
+  width: 100%;
+  height: 360rpx;
+  left: 0;
+  top: calc(210rpx + 1rem);
 }

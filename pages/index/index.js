@@ -6,7 +6,7 @@ const baseUrl = app.globalData.baseUrl;
 const imageUrl = app.globalData.imgUrl;
 const openIdPromise = require("./../openId.js").openId;
 const dataJson = require("./../module.js");
-
+const goodArr = [];
 Page({
   data: {
     addIcon: `${imageUrl}/add.png`,
@@ -16,7 +16,7 @@ Page({
     allRate: 0,
     allGoodsNum: 0,
     headNotice: "优惠信息",
-    headTitle: "商品",
+    headTitle: "",
     animationData: {},
     cardSwitch: false,
     animationAffiche: {},
@@ -38,7 +38,7 @@ Page({
     let that = this;
     /***设置头部区域***/
     wx.setNavigationBarTitle({
-      title: '首页'
+      title: '商品'
     });
     wx.setNavigationBarColor({
       frontColor: '#ffffff',
@@ -59,47 +59,44 @@ Page({
         }
       }
     })
+
     openIdPromise.then((res) => {
       that.setData({
         openId: res
       })
+
       /***获取购物车总数量***/
       dataJson.allGoodsNum(res).then(res => {
         that.setData({
           allGoodsNum: res
-        })
-      })
-
-      /**获取商品列表**/
-      dataJson.getGoods(res).then(res => {
-        let temporaryGoods = res;
-        if (!this.data.allGoodsNum) {
-          temporaryGoods.map((item) => {
-            item.number = 0
-          });
-          that.setData({
-            goods: temporaryGoods
-          });
-        } else {
-          dataJson.cartGoods(that.data.openId).then(res => {
+        });
+        /**获取商品列表**/
+        dataJson.getGoods(that.data.openId).then(res2 => {
+          let temporaryGoods = res2;
+          if (!res) {
             temporaryGoods.map((item) => {
-              res.map((item2) => {
-                if (item.id === item2.productId) {
-                  item.number = item2.number
-                } else {
-                  item.number = 0
-                }
-              })
+              item.number = 0
             });
             that.setData({
               goods: temporaryGoods
             });
-          })
-        }
-  
-        
+          } else {
+            dataJson.cartGoods(that.data.openId).then(res => {
+              temporaryGoods.map((item) => {
+                item.number = 0;
+                res.map((item2) => {
+                  if (item.id === item2.productId) {
+                    item.number = item2.number;
+                  }
+                })
+              });
+              that.setData({
+                goods: temporaryGoods
+              });
+            })
+          }
+        });
       })
-
       /*****获得购物车内的价格*****/
       dataJson.allRate(res).then(res => {
         that.setData({
@@ -109,19 +106,19 @@ Page({
     });
   },
   /*****下拉刷新****/
-  onPullDownRefresh: function () {
-    wx.showNavigationBarLoading() //在标题栏中显示加载
-    let that = this;
-    /**获取商品列表**/
-    dataJson.getGoods(this.data.openId).then(res => {
-      that.setData({
-        goods: res
-      });
-      wx.hideNavigationBarLoading() //完成停止加载
-      wx.stopPullDownRefresh() //停止下拉刷新
-    })
+  //   onPullDownRefresh: function () {
+  //     wx.showNavigationBarLoading() //在标题栏中显示加载
+  //     let that = this;
+  //     /**获取商品列表**/
+  //     dataJson.getGoods(this.data.openId).then(res => {
+  //       that.setData({
+  //         goods: res
+  //       });
+  //       wx.hideNavigationBarLoading() //完成停止加载
+  //       wx.stopPullDownRefresh() //停止下拉刷新
+  //     })
 
-  },
+  //   },
 
 
 
@@ -184,8 +181,9 @@ Page({
   /****减少商品数量的方法****/
   reduceNum(e) {
     wx.showLoading({
+      title: "加载中"
     });
-    if (!buttonFlag) return;
+
     let allNum = this.data.allGoodsNum;
     let stop = false;
     let id = e.currentTarget.dataset.index;
@@ -212,9 +210,6 @@ Page({
         }
         allNum = allNum <= 0 ? 0 : allNum;
 
-        this.setData({
-          allGoodsNum: allNum,
-        })
       }
     }
     if (this.data.cardSwitch) {
@@ -224,7 +219,6 @@ Page({
     if (allNum <= 0) {
       cartArr = []
     }
-    buttonFlag = false;
     wx.request({
       url: `${baseUrl}/sell/cart/change`,
       method: "POST",
@@ -237,27 +231,33 @@ Page({
               allRate: res
             })
           })
-          wx.hideLoading();
+          
           this.setData({
             goods: resultArr,
-            cartGoods: cartArr
+            cartGoods: cartArr,
+            allGoodsNum: allNum
           });
         }
+      },
+      complete:() =>{
+        wx.hideLoading();
       }
     })
   },
 
   /*******增加商品数量的方法*********/
+
   addNum(e) {
     wx.showLoading({
+      title: "加载中"
     });
-    if (!buttonFlag) return;
-    let stop = false;
+    let that = this;
     let allNum = this.data.allGoodsNum;
     let id = e.currentTarget.dataset.index;
     let resultArr = this.data.goods;
     let cartArr = this.data.cartGoods;
     let goodIndex = "";
+    let stop = false;
     let addFuc = (arr, dis) => {
       arr.map((item, index) => {
         if (item.id == id) {
@@ -281,9 +281,6 @@ Page({
         } else {
           allNum = allNum + 1;
         }
-        this.setData({
-          allGoodsNum: allNum
-        })
       }
     }
 
@@ -291,23 +288,20 @@ Page({
       addFuc(cartArr, 0);
     }
     addFuc(resultArr, 1);
-    this.setData({
-      goods: resultArr,
-      cartGoods: cartArr,
-    });
-    buttonFlag = false;
     wx.request({
       url: `${baseUrl}/sell/cart/change`,
       method: "POST",
       data: { "openId": this.data.openId, "productId": id, "number": resultArr[goodIndex].number },
       success: res => {
         if (res.data.code === 0) {
-          buttonFlag = true;
           dataJson.allRate(this.data.openId).then(res => {
             this.setData({
+              goods: resultArr,
+              cartGoods: cartArr,
+              allGoodsNum: allNum,
               allRate: res
-            })
-          })
+            });
+          });
         }
         else {
           console.log(res.data);
@@ -324,22 +318,39 @@ Page({
 
   /*******清空购物车*****/
   clearCart() {
-    wx.request({
-      url: `${baseUrl}/sell/cart/clear`,
-      method: "POST",
-      data: { "openId": this.data.openId },
-      success: res => {
-        if (res.data.code == 0) {
-          let goodsArr = this.data.goods;
-          goodsArr.map((item) => {
-            item.number = 0
+    let that = this;
+    wx.showModal({
+      title: '提示',
+      content: '您确定要清空吗？',
+      success: function (res) {
+        if (res.confirm) {
+          wx.showLoading({
+            title: '清空中',
           })
-          this.setData({
-            cartGoods: [],
-            goods: goodsArr,
-            allRate: 0,
-            allGoodsNum: 0
-          });
+          wx.request({
+            url: `${baseUrl}/sell/cart/clear`,
+            method: "POST",
+            data: { "openId": that.data.openId },
+            success: res => {
+              if (res.data.code == 0) {
+                let goodsArr = that.data.goods;
+                goodsArr.map((item) => {
+                  item.number = 0
+                })
+                that.setData({
+                  cartGoods: [],
+                  goods: goodsArr,
+                  allRate: 0,
+                  allGoodsNum: 0
+                });
+              }
+            },
+            complete: res => {
+              wx.hideLoading();
+            }
+          })
+        } else if (res.cancel) {
+
         }
       }
     })
@@ -422,7 +433,11 @@ Page({
                 'package': JSON.parse(res.data.data).package,
                 'signType': JSON.parse(res.data.data).signType,
                 'paySign': JSON.parse(res.data.data).paySign,
-                'success': function (res) {
+
+                'fail': function (res) {
+                  console.log(res);
+                },
+                "complete": function (res) {
                   let temporaryGoods = that.data.goods;
                   temporaryGoods.map((item) => {
                     item.number = 0
@@ -438,23 +453,10 @@ Page({
                     allGoodsNum: 0,
 
                   });
-                  wx.showToast({
-                    title: '支付成功',
-                    icon: 'success',
-                    duration: 1500
-                  })
-                },
-                'fail': function (res) {
-                  console.log(res);
-                  dataJson.allRate(that.data.openId).then(res => {
+                  dataJson.getGoods(this.data.openId).then(res => {
                     that.setData({
-                      allRate: res
-                    })
-                  })
-                  wx.showToast({
-                    title: '支付失败',
-                    icon: 'none',
-                    duration: 1500
+                      goods: res
+                    });
                   })
                 }
               })

@@ -1,7 +1,9 @@
 .key {
    padding:0.3rem 0.7rem;
 }
-
+.no-data{
+    text-align: center
+}
 .key-title {
   text-align: center;
   margin-bottom: 1rem;

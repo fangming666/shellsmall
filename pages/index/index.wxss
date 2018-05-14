@@ -21,7 +21,7 @@
 .pay-number>text {
   color: lightgray;
   margin-left: 250rpx;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
 }
 
 .shopping-cart {
@@ -49,21 +49,26 @@
 }
 
 .cart-num {
-  width: 20px;
-  height: 20px;
+  width: 50rpx;
+  height: 50rpx;
   background-color: red;
   color: white;
   text-align: center;
-  line-height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   right: -7px;
   top: -10px;
   border-radius: 50%;
+  font-size: 28rpx;
 }
 
 .example {
   display: block;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   width: 80%;
   margin-left: 0.5rem;
   height: 28px;
@@ -71,11 +76,11 @@
 }
 
 .example>text {
-  width: 100%;
+  width: 80%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-size: 14px
+  font-size: 14px;
 }
 
 .shopping-item>image {
@@ -147,13 +152,13 @@
 }
 
 .goods-warp {
-  height: calc(100vh - 140px);
-  padding: 10px 0;
+  height: calc(100vh - 100px);
+  padding: 20rpx 0 160rpx 0;
 }
 
 .goods {
   width: 100%;
-  height: 210rpx;
+  height: 215rpx;
   padding: 10rpx;
   margin-bottom: 10rpx;
   box-sizing: border-box;
@@ -189,8 +194,8 @@
 .goods-now>.count {
   float: right;
   margin-right: 1rem;
-  height: 40rpx;
-  line-height: 40rpx;
+  height: 50rpx;
+  line-height: 60rpx;
 }
 
 .shopping-trolley {
@@ -203,6 +208,16 @@
   box-sizing: border-box;
   z-index: 3;
   /* display: none; */
+}
+
+.noscroll {
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  z-index: 0;
 }
 
 .clooseCard {
@@ -224,10 +239,55 @@
 
 .shopping-trolley-title>text {
   font-size: 14px;
+  width: 30%;
+  text-align: right;
 }
 
 .shopping-trolley>.goods-warp {
   background-color: white;
+  height: calc(60vh - 120px);
+}
+
+.shopping-trolley .goods {
+  height: 120rpx;
+}
+
+.shopping-trolley .goods-item {
+  width: 100%;
+}
+.shopping-trolley .goods-item>view:nth-child(1){
+  padding-left: 1rem
+}
+.shopping-trolley .goods-title {
+  font-size: 1rem;
+}
+
+.shopping-trolley .goods-now {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  height: 84rpx;
+  /* line-height: 84rpx; */
+}
+
+.shopping-trolley .count {
+  width: 150rpx;
+  margin-left: 0.5rem;
+}
+
+.shopping-trolley .count view {
+  width: 50rpx;
+  text-align: center;
+}
+
+.shopping-trolley .addBtn, .shopping-trolley .reduceBtn {
+  margin: 0;
+}
+
+.goods-preferential {
+  color: #9b9b9b;
+  font-size: 0.9rem;
+  margin-top: 0.1rem;
 }
 
 .affiche-box {
@@ -305,11 +365,11 @@
 }
 
 .addBtn {
-  width: 40rpx;
-  height: 40rpx;
+  width: 50rpx;
+  height: 50rpx;
 }
 
 .reduceBtn {
-  width: 40rpx;
-  height: 40rpx;
+  width: 50rpx;
+  height: 50rpx;
 }

@@ -1,12 +1,13 @@
 <!--pages/news/news.wxml-->
 <view class="news-warp">
   <view class="news-title">{{newsTitle}}</view>
+  <view class="no-data" wx:if="{{ orderKong}}"> <image src="{{KongSrc}}"></image></view>
   <view wx:for="{{newsList}}" wx:key="key" class="news-list">
     <view class="news-time">{{item.timeStamp}}</view>
     <view class="news-info clearfix">
       <image class="pull-left" src="{{item.author?item.img:userInfo.avatarUrl}}"></image>
       <view class=" pull-left">
-        <text class="news-name ">{{item.author?"系统":userInfo.nickName}}</text>
+        <text class="news-name ">{{item.author?"客服":userInfo.nickName}}</text>
         <text class="news-text ">{{item.msg}}</text>
       </view>
     </view>

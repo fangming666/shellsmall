@@ -1,5 +1,6 @@
 <view class="key">
   <view class="key-title">{{keyTitle}}</view>
+   <view class="no-data" wx:if="{{ orderKong}}"> <image src="{{KongSrc}}"></image></view>
   <view class="key-list" wx:for="{{keyList}}" wx:key="key">
     <view class="key-info" catchtap='openKeyList' data-item="{{index}}">
       <text>key:{{item.key}}</text>

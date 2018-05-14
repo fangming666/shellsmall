@@ -3,7 +3,9 @@
 .news-warp {
   padding: 0.7rem 0 110rpx;
 }
-
+.no-data{
+    text-align: center
+}
 .news-title {
   text-align: center;
   margin-bottom: 1rem;

@@ -14,7 +14,7 @@ Page({
     openId: "",
     arr: [],
     orderKong: false,
-    KongSrc: "./../../img/Kong.png" //`${imageUrl}/Kong.png`
+    KongSrc: `${imageUrl}/no_data.png`
   },
 
   /**
@@ -39,10 +39,10 @@ Page({
         let nowDate = Date.parse(new Date());
         if (res.code === 0) {
           res.data.map(item => {
-            item.timeStamp
+              item.timeStamp = Math.abs(item.timeStamp - nowDate) / 1000 <= 60 ? "刚刚" : Math.abs(item.timeStamp - nowDate) / 1000 <= 600 ? `${Number.parseInt(Math.abs(item.timeStamp - nowDate) / 60000)}分钟之前` : dataJson.timetrans(item.timeStamp)
           })
           that.setData({
-            arr: res.data
+            arr: res.data,
           })
         } else {
           that.setData({
