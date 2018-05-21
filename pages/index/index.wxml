@@ -3,7 +3,13 @@
   <!----顶部公告区域  -->
   <view class="head" bindtap='openAfficheOne'>
     <view class="head-bg"></view>
-    <text class="head-title">{{headTitle}}</text>
+
+    <view class="head-title clearfix">
+      <view class="head-img-warp">
+        <image  src="{{renovateImg}}" animation ="{{renovatData}}" catchtap='renovateFun'></image>
+      </view>
+
+    </view>
     <view class="head-notice clearfix">
       <text class="head-notice-title pull-left">公告</text>
       <view class="example pull-left">
@@ -13,7 +19,7 @@
   </view>
 
   <!--中间商品区域  -->
-  <scroll-view class="goods-warp" scroll-y>
+  <scroll-view class="goods-warp" scroll-y enable-back-to-top="true">
     <view class="goods clearfix" wx:for="{{goods}}" wx:key="key">
       <image src="{{item.imageUrl}}" class="goods-img pull-left" catchtap='openAfficheTwo' data-item="{{index}}"></image>
       <view class="goods-item pull-left">
@@ -49,7 +55,7 @@
       </view>
       <text wx:if="{{allRate}}">￥{{allRate}}</text>
     </view>
-    <view class="pay-btn" bindtap='clickPay'>支付</view>
+    <view class="pay-btn" data-result="1" bindtap='clickPay'>支付</view>
   </view>
 
   <!----购物车  -->
@@ -57,7 +63,7 @@
     <view class="clooseCard" bindtap='closeCard'>
     </view>
     <view class="shopping-trolley-title">购物车
-      <text class="text-primary pull-right" bindtap='clearCart'>清空</text>
+      <text class="text-primary pull-right" bindtap='clearCart' data-result="0">清空</text>
     </view>
     <scroll-view class="goods-warp" scroll-y>
       <view class="goods clearfix" wx:for="{{cartGoods}}" wx:key="key">
@@ -70,7 +76,7 @@
             <text class="text-danger">￥{{item.originalPrice}}</text>
             <view class="clearfix count">
               <image class="pull-left reduceBtn" src="{{reduceIcon}}" bindtap='reduceNum' data-index="{{item.id}}" hidden="{{item.number<=0}}"></image>
-              <view  class="pull-left" hidden="{{item.number<=0}}">{{item.number}}</view>
+              <view class="pull-left" hidden="{{item.number<=0}}">{{item.number}}</view>
               <image class="pull-right addBtn" src="{{addIcon}}" bindtap='addNum' data-index="{{item.id}}"></image>
             </view>
           </view>

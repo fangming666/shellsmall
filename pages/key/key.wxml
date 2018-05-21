@@ -8,14 +8,17 @@
     </view>
     <view class="key-group" wx:if="{{item.openSwitch}}">
       <text wx:if="{{item.onceSwitch}}">只有一次编辑的机会，请仔细核对</text>
-      <view>微信appid
-        <input value="{{item.appId}}" disabled='{{!item.editFlag}}' bindinput='getAppId' data-item="{{index}}" />
+      <view>
+      <text>微信appid</text>
+        <input value="{{item.appId}}" class="{{item.editFlag?'':'active'}}" disabled='{{!item.editFlag}}' bindinput='getAppId' data-item="{{index}}" />
       </view>
-      <view wx:if="{{item.seretSwitch}}">微信secret
-        <input value="{{item.secret}}" disabled='{{!item.editFlag}}' bindinput='getSecret' data-item="{{index}}" />
+      <view wx:if="{{item.seretSwitch}}">
+      <text>微信secret</text>
+        <input value="{{item.secret}}" disabled='{{!item.editFlag}}' class="{{item.editFlag?'':'active'}}" bindinput='getSecret' data-item="{{index}}" />
       </view>
-      <view>登录邮箱
-        <input value="{{item.email}}" bindinput='verify' disabled="{{!item.editFlag}}" data-item="{{index}}" />
+      <view>
+      <text>登录邮箱</text>
+        <input value="{{item.email}}" bindinput='verify' class="{{item.editFlag?'':'active'}}" disabled="{{!item.editFlag}}" data-item="{{index}}" />
         <view class="text-danger" wx:if="{{item.emailSwitch}}">请输入正确的电子邮箱地址</view>
         <view class="text-danger" wx:if="{{item.Edit}}">微信appid和邮箱不能为空</view>
       </view>

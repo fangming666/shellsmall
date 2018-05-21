@@ -10,8 +10,7 @@ Page({
   data: {
     userInfo: {},
     hasUserInfo: false,
-    // loginImg: `${imageUrl}/right.png`,
-    loginImg: `./../../img/login.jpg`,
+    loginImg: `${imageUrl}/right.png`,
     rightIcon: `${imageUrl}/right.png`,
     myList: [{ "href": "/pages/order/order", "text": "订单", "img": `${imageUrl}/dingDan.jpg` },
     { "href": "/pages/key/key", "text": "key", "img": `${imageUrl}/key.jpg` },

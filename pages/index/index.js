@@ -13,10 +13,10 @@ Page({
     reduceIcon: `${imageUrl}/reduce.png`,
     cartIcon: `${imageUrl}/cart.png`,
     clooseIcon: `${imageUrl}/cloose.png`,
+    renovateImg: `${imageUrl}/refresh.png`,
     allRate: 0,
     allGoodsNum: 0,
     headNotice: "优惠信息",
-    headTitle: "",
     animationData: {},
     cardSwitch: false,
     animationAffiche: {},
@@ -31,7 +31,10 @@ Page({
     goods: [],
     cartGoods: [],
     openId: "",
-    btnDisabled: false
+    btnDisabled: false,
+    renovatData: "",
+    Interval: "",
+    rotateNum: 0
 
   },
   onLoad: function () {
@@ -64,7 +67,6 @@ Page({
       that.setData({
         openId: res
       })
-
       /***获取购物车总数量***/
       dataJson.allGoodsNum(res).then(res => {
         that.setData({
@@ -105,21 +107,70 @@ Page({
       })
     });
   },
-  /*****下拉刷新****/
-  //   onPullDownRefresh: function () {
-  //     wx.showNavigationBarLoading() //在标题栏中显示加载
-  //     let that = this;
-  //     /**获取商品列表**/
-  //     dataJson.getGoods(this.data.openId).then(res => {
-  //       that.setData({
-  //         goods: res
-  //       });
-  //       wx.hideNavigationBarLoading() //完成停止加载
-  //       wx.stopPullDownRefresh() //停止下拉刷新
-  //     })
 
-  //   },
+  /*****点击刷新****/
+  renovateFun() {
+    let that = this;
+    that.renovateAni();
+    /**获取商品列表**/
+    dataJson.getGoods(that.data.openId).then(res2 => {
+      let temporaryGoods = res2;
+      if (!that.data.allGoodsNum) {
+        temporaryGoods.map((item) => {
+          item.number = 0
+        });
+        clearInterval(that.data.Interval)
+        that.setData({
+          goods: temporaryGoods,
+          Interval: ""
+        });
 
+      } else {
+        dataJson.cartGoods(that.data.openId).then(res => {
+          temporaryGoods.map((item) => {
+            item.number = 0;
+            res.map((item2) => {
+              if (item.id === item2.productId) {
+                item.number = item2.number;
+              }
+            })
+          });
+          clearInterval(that.data.Interval)
+          that.setData({
+            goods: temporaryGoods,
+            Interval: ""
+          });
+
+        })
+      }
+
+    });
+
+  },
+  /***刷新的动画****/
+  renovateAni() {
+    var animation = wx.createAnimation({
+      duration: 500,
+      timingFunction: 'ease',
+    })
+    this.animation = animation
+    this.setData({
+      renovatData: animation.export()
+    })
+    var n = this.data.rotateNum;
+    //连续动画需要添加定时器,所传参数每次+1就行
+    let Interval = setInterval(function () {
+      n = n + 1;
+      this.animation.rotate(180 * (n)).step()
+      this.setData({
+        renovatData: this.animation.export(),
+        rotateNum: n
+      })
+    }.bind(this), 80);
+    this.setData({
+      Interval: Interval
+    })
+  },
 
 
   /*****显示购物车******/
@@ -170,6 +221,11 @@ Page({
     });
   },
   cascadeDismiss: function () {        // 购物车关闭动画
+    var animation = wx.createAnimation({
+      duration: 500,
+      timingFunction: 'ease-in-out',
+    });
+    this.animation = animation;
     this.animation.opacity(0).step();
     this.setData({
       animationData: this.animation.export(),
@@ -231,7 +287,7 @@ Page({
               allRate: res
             })
           })
-          
+
           this.setData({
             goods: resultArr,
             cartGoods: cartArr,
@@ -239,7 +295,7 @@ Page({
           });
         }
       },
-      complete:() =>{
+      complete: () => {
         wx.hideLoading();
       }
     })
@@ -317,43 +373,83 @@ Page({
 
 
   /*******清空购物车*****/
-  clearCart() {
+  clearCartFun(result) {
     let that = this;
-    wx.showModal({
-      title: '提示',
-      content: '您确定要清空吗？',
-      success: function (res) {
-        if (res.confirm) {
-          wx.showLoading({
-            title: '清空中',
-          })
-          wx.request({
-            url: `${baseUrl}/sell/cart/clear`,
-            method: "POST",
-            data: { "openId": that.data.openId },
-            success: res => {
-              if (res.data.code == 0) {
-                let goodsArr = that.data.goods;
-                goodsArr.map((item) => {
-                  item.number = 0
-                })
-                that.setData({
-                  cartGoods: [],
-                  goods: goodsArr,
-                  allRate: 0,
-                  allGoodsNum: 0
-                });
-              }
-            },
-            complete: res => {
-              wx.hideLoading();
-            }
-          })
-        } else if (res.cancel) {
 
+    if (result == "0" && that.data.allGoodsNum) {
+      wx.showModal({
+        title: '提示',
+        content: '您确定要清空吗？',
+        success: function (res) {
+          if (res.confirm) {
+            wx.showLoading({
+              title: '清空中',
+            })
+            wx.request({
+              url: `${baseUrl}/sell/cart/clear`,
+              method: "POST",
+              data: { "openId": that.data.openId },
+              success: res => {
+                if (res.data.code == 0) {
+                  let goodsArr = that.data.goods;
+                  goodsArr.map((item) => {
+                    item.number = 0
+                  })
+                  that.setData({
+                    cartGoods: [],
+                    goods: goodsArr,
+                    allRate: 0,
+                    allGoodsNum: 0
+                  });
+                }
+              },
+              complete: res => {
+                wx.hideLoading();
+              }
+            })
+          }
         }
+      })
+    } else {
+      if (!that.data.allGoodsNum) {
+        wx.showToast({
+          title: '购物车为空，请添加商品',
+          icon: 'none',
+          duration: 1000
+        })
+      } else {
+        wx.showLoading({
+          title: '清空中',
+        })
       }
-    })
+
+      wx.request({
+        url: `${baseUrl}/sell/cart/clear`,
+        method: "POST",
+        data: { "openId": that.data.openId },
+        success: res => {
+          if (res.data.code == 0) {
+
+            that.setData({
+              cartGoods: [],
+              allRate: 0,
+              allGoodsNum: 0
+            });
+
+          }
+        },
+        complete: res => {
+          if (that.data.allGoodsNum) {
+            wx.hideLoading();
+          }
+        }
+      })
+    }
+  },
+  clearCart(e) {
+    let result = e.currentTarget.dataset.result;
+    this.clearCartFun(result)
+
   },
   /****关闭公告模态框*****/
   clooseAffiche() {
@@ -407,6 +503,11 @@ Page({
     });
   },
   afficheDismiss: function () {        // 公告栏关闭动画
+    var animation = wx.createAnimation({
+      duration: 500,
+      timingFunction: 'ease-in-out',
+    });
+    this.animation = animation;
     this.animation.opacity(0).step();
     this.setData({
       animationAffiche: this.animation.export(),
@@ -414,8 +515,10 @@ Page({
   },
 
   // 进行支付
-  clickPay() {
+  clickPay(e) {
     let that = this;
+    let result = e.currentTarget.dataset.result;
+
     wx.request({
       url: `${baseUrl}/sell/cart/list`,
       method: "POST",
@@ -438,24 +541,14 @@ Page({
                   console.log(res);
                 },
                 "complete": function (res) {
-                  let temporaryGoods = that.data.goods;
-                  temporaryGoods.map((item) => {
-                    item.number = 0
-                  });
-                  dataJson.allRate(that.data.openId).then(res => {
-                    that.setData({
-                      allRate: res
+                  that.clearCartFun(result)
+                  dataJson.getGoods(that.data.openId).then(res => {
+                    let goodsArr = res;
+                    goodsArr.map((item) => {
+                      item.number = 0
                     })
-                  })
-                  that.clearCart();
-                  that.setData({
-                    goods: temporaryGoods,
-                    allGoodsNum: 0,
-
-                  });
-                  dataJson.getGoods(this.data.openId).then(res => {
                     that.setData({
-                      goods: res
+                      goods: goodsArr
                     });
                   })
                 }

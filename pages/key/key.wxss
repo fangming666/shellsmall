@@ -1,9 +1,12 @@
 .key {
-   padding:0.3rem 0.7rem;
+  padding: 0.3rem 0.7rem;
+  background: #e6e6e6;
 }
-.no-data{
-    text-align: center
+
+.no-data {
+  text-align: center;
 }
+
 .key-title {
   text-align: center;
   margin-bottom: 1rem;
@@ -13,13 +16,15 @@
   border-bottom: 1px solid lightgray;
   margin-bottom: 0.5rem;
   padding: 0.5rem;
+  background-color: white;
+  border-radius: 4px;
 }
 
 .key-info>text {
   margin-right: 1rem;
-  margin-bottom: .8rem;
+  margin-bottom: 0.8rem;
   font-size: 32rpx;
-  display: block
+  display: block;
 }
 
 .key-group {
@@ -29,13 +34,19 @@
 .key-group>text {
   font-size: 14px;
   color: #db524b !important;
-  display: block
+  display: block;
 }
 
 .key-group>view {
   font-size: 15px;
   color: #9b9b9b;
   height: 32px;
+}
+
+.key-group>view>text {
+  width: 80px;
+  display: inline-block;
+  text-align: left;
 }
 
 .key-group>view:last-child {
@@ -47,4 +58,11 @@
   position: relative;
   top: 8px;
   left: 0.5rem;
+  border: 1px solid #9b9b9b;
+  border-radius: 4px;
+  padding-left: 4px;
+}
+
+.active {
+  border: none!important;
 }

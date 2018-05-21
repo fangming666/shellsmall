@@ -8,6 +8,8 @@
   left: 0;
   bottom: 0;
   z-index: 4;
+  box-sizing: border-box;
+  line-height: 50px;
 }
 
 .pay-number {
@@ -71,8 +73,9 @@
   text-overflow: ellipsis;
   width: 80%;
   margin-left: 0.5rem;
-  height: 28px;
+  height: 1rem;
   color: lightgray;
+  line-height: 1;
 }
 
 .example>text {
@@ -128,8 +131,26 @@
   font-size: 1.2rem;
   height: 60px;
   line-height: 60px;
-  text-align: center;
+  text-align: right;
   display: block;
+  position: relative;
+}
+
+.head-img-warp {
+  width: 20%;
+  height: 60px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.head-img-warp>image {
+  width: 50rpx;
+  height: 50rpx;
+   position: absolute;
+  right: 50rpx;
+  top: 50rpx;
+
 }
 
 .head-notice {
@@ -139,12 +160,12 @@
 }
 
 .head-notice-title {
-  display: inline-block;
   margin-left: 1rem;
   width: 30px;
   height: 1rem;
-  text-align: center;
-  line-height: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
   font-size: 12px;
   border-radius: 4px;
@@ -255,9 +276,11 @@
 .shopping-trolley .goods-item {
   width: 100%;
 }
-.shopping-trolley .goods-item>view:nth-child(1){
-  padding-left: 1rem
+
+.shopping-trolley .goods-item>view:nth-child(1) {
+  padding-left: 1rem;
 }
+
 .shopping-trolley .goods-title {
   font-size: 1rem;
 }
@@ -372,4 +395,16 @@
 .reduceBtn {
   width: 50rpx;
   height: 50rpx;
+}
+
+.clearfix {
+  clear: both !important;
+}
+
+.float-left {
+  float: left !important;
+}
+
+.float-right {
+  float: right !important;
 }

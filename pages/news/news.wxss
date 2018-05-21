@@ -1,7 +1,7 @@
 /* pages/news/news.wxss */
 
 .news-warp {
-  padding: 0.7rem 0 110rpx;
+  padding: 0.7rem 0 0;
 }
 .no-data{
     text-align: center
@@ -66,4 +66,11 @@
   height: 29px;
   position: relative;
   left: 1rem;
+  border: 1px solid #9b9b9b;
+  border-radius: 4px;
+  padding-left: 4px;
+  text-align: left
+}
+scroll-view{
+  height: calc(100vh - 220rpx)
 }

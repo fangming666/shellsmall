@@ -1,8 +1,11 @@
 <!--pages/news/news.wxml-->
-<view class="news-warp">
+<view class="news-warp" id="j_page">
   <view class="news-title">{{newsTitle}}</view>
-  <view class="no-data" wx:if="{{ orderKong}}"> <image src="{{KongSrc}}"></image></view>
-  <view wx:for="{{newsList}}" wx:key="key" class="news-list">
+  <view class="no-data" wx:if="{{ orderKong}}">
+    <image src="{{KongSrc}}"></image>
+  </view>
+  <scroll-view scroll-y='true' scroll-top="{{scrollTop}}"  enable-back-to-top="true">
+   <view  wx:for="{{newsList}}" wx:key="key" class="news-list">
     <view class="news-time">{{item.timeStamp}}</view>
     <view class="news-info clearfix">
       <image class="pull-left" src="{{item.author?item.img:userInfo.avatarUrl}}"></image>
@@ -12,6 +15,8 @@
       </view>
     </view>
   </view>
+  </scroll-view>
+ 
 
   <view class="clearfix dialog-box">
     <input class="pull-left" bindinput='getInfo' value="{{sendInfo}}" />

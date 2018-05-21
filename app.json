@@ -1,9 +1,9 @@
 {
   "pages": [
-    "pages/my/my",
     "pages/index/index",
-    "pages/key/key",
     "pages/news/news",
+    "pages/key/key",
+    "pages/my/my",
     "pages/order/order"
   ],
   "window": {
