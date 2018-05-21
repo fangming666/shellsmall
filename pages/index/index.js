@@ -119,10 +119,9 @@ Page({
         temporaryGoods.map((item) => {
           item.number = 0
         });
-        clearInterval(that.data.Interval)
         that.setData({
           goods: temporaryGoods,
-          Interval: ""
+
         });
 
       } else {
@@ -135,10 +134,10 @@ Page({
               }
             })
           });
-          clearInterval(that.data.Interval)
+
           that.setData({
             goods: temporaryGoods,
-            Interval: ""
+
           });
 
         })
@@ -161,12 +160,19 @@ Page({
     //连续动画需要添加定时器,所传参数每次+1就行
     let Interval = setInterval(function () {
       n = n + 1;
-      this.animation.rotate(180 * (n)).step()
+      this.animation.rotate(-180 * (n)).step()
       this.setData({
         renovatData: this.animation.export(),
-        rotateNum: n
       })
-    }.bind(this), 80);
+      if (n == this.data.rotateNum + 2) {
+        clearInterval(this.data.Interval);
+        this.setData({
+          rotateNum: n,
+          Interval: Interval
+        })
+      }
+    }.bind(this), 16);
+
     this.setData({
       Interval: Interval
     })

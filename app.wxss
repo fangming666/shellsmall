@@ -1,10 +1,10 @@
 /**app.wxss**/
 
-.pull-left {
+.pull-left, float-left {
   float: left;
 }
 
-.pull-right {
+.pull-right, float-right {
   float: right;
 }
 

@@ -66,18 +66,18 @@
       <text class="text-primary pull-right" bindtap='clearCart' data-result="0">清空</text>
     </view>
     <scroll-view class="goods-warp" scroll-y>
-      <view class="goods clearfix" wx:for="{{cartGoods}}" wx:key="key">
+      <view class="goods clearfix" wx:for="{{cartGoods}}" wx:key="key"  hidden="{{item.number<=0}}">
         <view class="goods-item clearfix">
           <view class="pull-left">
             <text class="goods-title" data-item="{{index}}">{{item.name}}</text>
             <view class="goods-preferential">{{item.preferential}}</view>
           </view>
-          <view class="goods-now clearfix pull-right">
+          <view class="goods-now clearfix float-right">
             <text class="text-danger">￥{{item.originalPrice}}</text>
             <view class="clearfix count">
               <image class="pull-left reduceBtn" src="{{reduceIcon}}" bindtap='reduceNum' data-index="{{item.id}}" hidden="{{item.number<=0}}"></image>
               <view class="pull-left" hidden="{{item.number<=0}}">{{item.number}}</view>
-              <image class="pull-right addBtn" src="{{addIcon}}" bindtap='addNum' data-index="{{item.id}}"></image>
+              <image class="float-right addBtn" src="{{addIcon}}" bindtap='addNum' data-index="{{item.id}}"></image>
             </view>
           </view>
         </view>

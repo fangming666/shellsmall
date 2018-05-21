@@ -147,10 +147,9 @@
 .head-img-warp>image {
   width: 50rpx;
   height: 50rpx;
-   position: absolute;
+  position: absolute;
   right: 50rpx;
   top: 50rpx;
-
 }
 
 .head-notice {
@@ -288,6 +287,7 @@
 .shopping-trolley .goods-now {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   margin: 0;
   height: 84rpx;
   /* line-height: 84rpx; */
@@ -397,14 +397,4 @@
   height: 50rpx;
 }
 
-.clearfix {
-  clear: both !important;
-}
 
-.float-left {
-  float: left !important;
-}
-
-.float-right {
-  float: right !important;
-}
